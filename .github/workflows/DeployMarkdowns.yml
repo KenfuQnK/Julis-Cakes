@@ -1,4 +1,4 @@
-name: Convert Markdown to HTML and Deploy
+name: Convert Markdown to HTML
 
 on:
   push:
@@ -27,10 +27,9 @@ jobs:
     # 4. Convertir todos los archivos Markdown a HTML
     - name: Convert Markdown files to HTML
       run: |
-        mkdir -p docs
-        for file in *.md; do
-          [ -f "$file" ] || break
-          marked -o "docs/${file%.md}.html" "$file"
+        for file in recipes/*.md; do
+          [ -f "$file" ] || continue
+          marked -o "${file%.md}.html" "$file"
         done
 
     # 5. Commit y push de los archivos generados
@@ -38,8 +37,8 @@ jobs:
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git add docs/
-        git commit -m "Deploy Markdown to HTML via GitHub Actions"
+        git add recipes/*.html
+        git commit -m "Convert Markdown to HTML"
         git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
