@@ -27,15 +27,19 @@ jobs:
     # 4. Convertir todos los archivos Markdown a HTML
     - name: Convert Markdown files to HTML
       run: |
-        mkdir -p public
+        mkdir -p docs
         for file in *.md; do
           [ -f "$file" ] || break
-          marked -o "public/${file%.md}.html" "$file"
+          marked -o "docs/${file%.md}.html" "$file"
         done
 
-    # 5. Subir los archivos HTML generados al repositorio
-    - name: Deploy HTML to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./public
+    # 5. Commit y push de los archivos generados
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add docs/
+        git commit -m "Deploy Markdown to HTML via GitHub Actions"
+        git push origin main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
