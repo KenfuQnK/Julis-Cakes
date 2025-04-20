@@ -1,0 +1,41 @@
+name: Convert Markdown to HTML and Deploy
+
+on:
+  push:
+    branches:
+      - main # Se ejecuta cuando se suben cambios a la rama principal
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout del repositorio
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # 2. Configurar Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    # 3. Instalar una herramienta para convertir Markdown a HTML
+    - name: Install Markdown to HTML converter
+      run: npm install -g markdown-to-html
+
+    # 4. Convertir todos los archivos Markdown a HTML
+    - name: Convert Markdown files to HTML
+      run: |
+        mkdir -p public
+        for file in *.md; do
+          [ -f "$file" ] || break
+          markdown-to-html "$file" > "public/${file%.md}.html"
+        done
+
+    # 5. Subir los archivos HTML generados al repositorio
+    - name: Deploy HTML to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
