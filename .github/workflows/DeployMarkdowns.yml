@@ -20,9 +20,9 @@ jobs:
       with:
         node-version: '16'
 
-    # 3. Instalar dependencias (marked)
+    # 3. Instalar dependencias (marked Y cheerio)
     - name: Install dependencies
-      run: npm install marked@latest
+      run: npm install
 
     # 4. Mostrar el contenido de los archivos clave para depuración
     - name: Debug files
