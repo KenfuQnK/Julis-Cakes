@@ -24,11 +24,23 @@ jobs:
     - name: Install dependencies
       run: npm install marked@latest
 
-    # 4. Ejecutar el script para generar HTML
-    - name: Generate HTML files
-      run: node generate-html.js
+    # 4. Mostrar el contenido de los archivos clave para depuración
+    - name: Debug files
+      run: |
+        echo "===== CONTENIDO DE generate-html.js ====="
+        cat generate-html.js
+        echo "===== CONTENIDO DE TEMPLATE ====="
+        cat rendered/template.html
 
-    # 5. Actualizar el archivo index.html con las recetas
+    # 5. Ejecutar el script para generar HTML con más logs
+    - name: Generate HTML files
+      run: |
+        echo "===== INICIANDO GENERACIÓN DE HTML ====="
+        node generate-html.js
+        echo "===== HTML GENERADO ====="
+        cat rendered/receta_*_de_*.html | head -n 50
+
+    # 6. Actualizar el archivo index.html con las recetas
     - name: Update index.html
       run: |
         echo "<!DOCTYPE html>" > index.html
@@ -41,12 +53,25 @@ jobs:
         done
         echo "</ul></main><footer><p>© 2025 Julis Cakes</p></footer></body></html>" >> index.html
 
-    # 6. Subir los cambios al repositorio
+    # 7. Verificar ubicación del archivo CSS
+    - name: Check CSS file
+      run: |
+        echo "===== VERIFICANDO ARCHIVO CSS ====="
+        if [ -f "styles.css" ]; then
+          echo "✅ styles.css encontrado en la raíz"
+        elif [ -f "rendered/styles.css" ]; then
+          echo "⚠️ styles.css encontrado en rendered/ - moviendo a la raíz"
+          cp rendered/styles.css styles.css
+        else
+          echo "❌ No se encontró styles.css"
+        fi
+
+    # 8. Subir los cambios al repositorio
     - name: Commit and push changes
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git add rendered/*.html index.html
+        git add rendered/*.html index.html styles.css
         git commit -m "Convert Markdown to HTML and update index"
         git push origin main
       env:
