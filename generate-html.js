@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const { marked } = require('marked');
+const { marked } = require('marked'); // Importar correctamente marked
 
-// Ruta de las carpetas
+// Rutas de las carpetas
 const recipesDir = path.join(__dirname, 'recipes');
 const renderedDir = path.join(__dirname, 'rendered');
 const templatePath = path.join(renderedDir, 'template.html');
@@ -27,17 +27,25 @@ files.forEach(file => {
   const htmlContent = marked(markdownContent);
 
   // Generar un slug para el nombre del archivo
-  const title = path.basename(file, '.md');
-  const slug = title
+  const originalTitle = path.basename(file, '.md');
+  const slug = originalTitle
     .normalize('NFD') // Eliminar acentos
     .replace(/[\u0300-\u036f]/g, '') // Eliminar diacríticos
     .replace(/\s+/g, '_') // Reemplazar espacios por guiones bajos
     .replace(/[^\w\-]/g, '') // Eliminar caracteres no alfanuméricos
     .toLowerCase();
 
+  // Escapar caracteres especiales en el título
+  const escapedTitle = originalTitle
+    .replace(/&/g, '&amp;') // Escapar ampersand
+    .replace(/</g, '&lt;') // Escapar menor que
+    .replace(/>/g, '&gt;') // Escapar mayor que
+    .replace(/"/g, '&quot;') // Escapar comillas dobles
+    .replace(/'/g, '&#39;'); // Escapar comillas simples
+
   // Reemplazar los marcadores en la plantilla
   const finalHtml = template
-    .replace('{{title}}', title)
+    .replace('{{title}}', escapedTitle)
     .replace('{{content}}', htmlContent);
 
   // Guardar el archivo HTML en la carpeta `rendered`
