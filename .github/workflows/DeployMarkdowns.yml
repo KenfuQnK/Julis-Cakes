@@ -40,38 +40,31 @@ jobs:
         echo "===== HTML GENERADO ====="
         cat rendered/receta_*_de_*.html | head -n 50
 
-    # 6. Actualizar el archivo index.html con las recetas
-    - name: Update index.html
+    # 6. Copiar archivos CSS
+    - name: Copy CSS files
       run: |
-        echo "<!DOCTYPE html>" > index.html
-        echo "<html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Julis Cakes</title><link rel='stylesheet' href='styles.css'></head><body><header><h1>🎂 Julis Cakes</h1></header><main><h2>Recetas Disponibles</h2><ul>" >> index.html
-        for file in rendered/*.html; do
-          [ "$file" != "rendered/template.html" ] || continue
-          filename=$(basename "$file")
-          title=$(basename "$file" .html | sed 's/_/ /g; s/\b\(.\)/\u\1/g') # Convertir a título amigable
-          echo "<li><a href='rendered/$filename'>$title</a></li>" >> index.html
-        done
-        echo "</ul></main><footer><p>© 2025 Julis Cakes</p></footer></body></html>" >> index.html
-
-    # 7. Verificar ubicación del archivo CSS
-    - name: Check CSS file
-      run: |
-        echo "===== VERIFICANDO ARCHIVO CSS ====="
-        if [ -f "styles.css" ]; then
-          echo "✅ styles.css encontrado en la raíz"
-        elif [ -f "rendered/styles.css" ]; then
-          echo "⚠️ styles.css encontrado en rendered/ - moviendo a la raíz"
-          cp rendered/styles.css styles.css
+        echo "===== COPIANDO ARCHIVOS CSS ====="
+        if [ ! -f "rendered/styles-recipes.css" ]; then
+          echo "❌ No se encontró styles-recipes.css en rendered/"
         else
-          echo "❌ No se encontró styles.css"
+          echo "✅ styles-recipes.css encontrado - actualizando"
         fi
+
+    # 7. Verificar archivos generados
+    - name: Check generated files
+      run: |
+        echo "===== VERIFICANDO ARCHIVOS GENERADOS ====="
+        ls -la rendered/*.html
+        ls -la index.html
+        ls -la styles.css
+        ls -la rendered/styles-recipes.css
 
     # 8. Subir los cambios al repositorio
     - name: Commit and push changes
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git add rendered/*.html index.html styles.css
+        git add rendered/*.html rendered/*.css index.html styles.css
         git commit -m "Convert Markdown to HTML and update index"
         git push origin main
       env:
