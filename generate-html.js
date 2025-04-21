@@ -9,6 +9,32 @@ const templatePath = path.join(renderedDir, 'template.html');
 
 console.log('🔍 Script iniciado');
 
+// Personalizar el renderer para dar formato de cards
+const renderer = new marked.Renderer();
+
+// Personalizar listas (ul/ol) para que sean contenedores de cards
+renderer.list = function(body, ordered) {
+  const type = ordered ? 'ol' : 'ul';
+  return `<div class="cards-container ${ordered ? 'steps-cards' : 'ingredients-cards'}">${body}</div>`;
+};
+
+// Personalizar elementos de lista (li) para que sean cards
+renderer.listitem = function(text) {
+  // Extraer texto limpio si contiene checkbox
+  if (text.includes('type="checkbox"')) {
+    text = text.replace(/<input[^>]*>/g, '').trim();
+  }
+  return `<div class="card">${text}</div>`;
+};
+
+// Opciones de marked para procesar el Markdown
+const markedOptions = {
+  renderer: renderer,
+  gfm: true, // GitHub Flavored Markdown
+  breaks: true,
+  smartLists: true
+};
+
 // Obtener la plantilla HTML
 const template = fs.readFileSync(templatePath, 'utf8');
 
@@ -22,8 +48,8 @@ files.forEach(file => {
   const filePath = path.join(recipesDir, file);
   const markdownContent = fs.readFileSync(filePath, 'utf8');
   
-  // Convertir a HTML - SIN PERSONALIZACIÓN
-  const htmlContent = marked.parse(markdownContent);
+  // Convertir a HTML usando el renderer personalizado
+  const htmlContent = marked(markdownContent, markedOptions);
   
   // Título y slug
   const originalTitle = path.basename(file, '.md');
