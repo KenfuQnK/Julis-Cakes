@@ -20,25 +20,13 @@ jobs:
       with:
         node-version: '16'
 
-    # 3. Instalar `marked` para convertir Markdown a HTML
-    - name: Install Marked (Markdown to HTML converter)
-      run: npm install -g marked
+    # 3. Instalar dependencias (marked)
+    - name: Install dependencies
+      run: npm install marked
 
-    # 4. Convertir archivos Markdown a HTML y usar la plantilla
-    - name: Convert Markdown to HTML
-      run: |
-        mkdir -p rendered
-        template=$(cat rendered/template.html)
-        for file in recipes/*.md; do
-          [ -f "$file" ] || continue
-          # Crear un slug para el nombre del archivo
-          title=$(basename "$file" .md)
-          slug=$(echo "$title" | iconv -t ascii//TRANSLIT | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/_/g')
-          # Convertir el contenido del Markdown a HTML
-          content=$(marked "$file" | sed 's/[&/\]/\\&/g') # Escapar caracteres especiales
-          # Usar la plantilla para generar el HTML final
-          echo "$template" | sed "s/{{title}}/$title/g" | sed "s,{{content}},$content,g" > "rendered/${slug}.html"
-        done
+    # 4. Ejecutar el script para generar HTML
+    - name: Generate HTML files
+      run: node generate-html.js
 
     # 5. Actualizar el archivo index.html con las recetas
     - name: Update index.html
