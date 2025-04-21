@@ -12,28 +12,8 @@ console.log('🔍 Script iniciado');
 // Personalizar el renderer para dar formato de cards
 const renderer = new marked.Renderer();
 
-// Personalizar listas (ul/ol) para que sean contenedores de cards
-renderer.list = function(body, ordered) {
-  const type = ordered ? 'ol' : 'ul';
-  return `<div class="cards-container ${ordered ? 'steps-cards' : 'ingredients-cards'}">${body}</div>`;
-};
-
-// Personalizar elementos de lista (li) para que sean cards
-renderer.listitem = function(text) {
-  // Extraer texto limpio si contiene checkbox
-  if (text.includes('type="checkbox"')) {
-    text = text.replace(/<input[^>]*>/g, '').trim();
-  }
-  return `<div class="card">${text}</div>`;
-};
-
-// Opciones de marked para procesar el Markdown
-const markedOptions = {
-  renderer: renderer,
-  gfm: true, // GitHub Flavored Markdown
-  breaks: true,
-  smartLists: true
-};
+// ENFOQUE ALTERNATIVO: No personalizar renderer.list y renderer.listitem
+// En su lugar, transformamos el HTML ya generado
 
 // Obtener la plantilla HTML
 const template = fs.readFileSync(templatePath, 'utf8');
@@ -48,8 +28,20 @@ files.forEach(file => {
   const filePath = path.join(recipesDir, file);
   const markdownContent = fs.readFileSync(filePath, 'utf8');
   
-  // Convertir a HTML usando el renderer personalizado
-  const htmlContent = marked(markdownContent, markedOptions);
+  // Convertir a HTML usando marked normal (sin renderer personalizado)
+  let htmlContent = marked.parse(markdownContent);
+  
+  // Modificar el HTML generado para convertir listas en cards
+  // 1. Reemplazar <ul> por divs con clase cards-container ingredients-cards
+  htmlContent = htmlContent.replace(/<ul>/g, '<div class="cards-container ingredients-cards">');
+  htmlContent = htmlContent.replace(/<\/ul>/g, '</div>');
+  
+  // 2. Reemplazar <ol> por divs con clase cards-container steps-cards
+  htmlContent = htmlContent.replace(/<ol>/g, '<div class="cards-container steps-cards">');
+  htmlContent = htmlContent.replace(/<\/ol>/g, '</div>');
+  
+  // 3. Reemplazar <li> por divs con clase card
+  htmlContent = htmlContent.replace(/<li>(.*?)<\/li>/g, '<div class="card">$1</div>');
   
   // Título y slug
   const originalTitle = path.basename(file, '.md');
@@ -70,6 +62,10 @@ files.forEach(file => {
   fs.writeFileSync(outputFilePath, finalHtml, 'utf8');
   
   console.log(`✅ Generado: ${outputFilePath}`);
+  
+  // Imprimir un fragmento del HTML generado para debug
+  console.log('📄 Fragmento del HTML generado:');
+  console.log(htmlContent.substring(0, 500) + '...');
 });
 
 console.log('\n✨ Procesamiento completado');
