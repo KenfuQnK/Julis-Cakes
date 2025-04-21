@@ -7,13 +7,17 @@
     <link rel="stylesheet" href="styles-recipes.css">
 </head>
 <body>
-    <header>
-        <h1>🎂 Receta - Brazo de Gitano</h1>
-        <nav>
-            <a href="/">Inicio</a>
-        </nav>
-    </header>
-    <main>
+    <div class="chat-column">
+        <h2 class="chat-title">Chat con la IA</h2>
+        <button class="upload-photo-btn">Subir foto</button>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" placeholder="Escribe tu mensaje...">
+            <button class="chat-send-btn">Enviar</button>
+        </div>
+    </div>
+    
+    <div class="recipe-column">
+        <h1 class="recipe-title">Receta - Brazo de Gitano</h1>
         <h1>Ingredientes</h1>
 <div class="cards-container ingredients-cards">
 <div class="card"><input disabled="" type="checkbox"> 4 claras de huevo</div>
@@ -52,9 +56,22 @@
 <div class="card">Si se enfría demasiado, se puede romper al enrollar</div>
 </div>
 
-    </main>
-    <footer>
-        <p>© 2025 Julis Cakes - Todas las recetas</p>
-    </footer>
+    </div>
+    
+    <div class="recipes-list-column">
+        <h2 class="recipes-list-title">Listado de recetas</h2>
+        <div class="recipe-card">
+            <div class="recipe-card-title">Receta 1</div>
+            <div class="recipe-card-image">imagen</div>
+        </div>
+        <div class="recipe-card">
+            <div class="recipe-card-title">Receta 2</div>
+            <div class="recipe-card-image">imagen</div>
+        </div>
+        <div class="recipe-card">
+            <div class="recipe-card-title">Receta 3</div>
+            <div class="recipe-card-image">imagen</div>
+        </div>
+    </div>
 </body>
 </html>
