@@ -31,8 +31,8 @@ jobs:
         mkdir -p recipes
         for file in recipes/*.md; do
           [ -f "$file" ] || continue
-          title=$(basename "$file" .md)
-          content=$(marked "$file")
+          title=$(basename "$file" .md | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
+          content=$(marked "$file" | sed 's/[&/\]/\\&/g') # Escapar caracteres especiales
           echo "$template" | sed "s/{{title}}/$title/g" | sed "s,{{content}},$content,g" > "recipes/${title}.html"
         done
 
