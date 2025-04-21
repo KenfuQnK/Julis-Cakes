@@ -1,0 +1,24 @@
+{
+  "name": "julis-cakes",
+  "version": "1.0.0",
+  "description": "Sitio web de Julis Cakes",
+  "main": "generate-html.js",
+  "scripts": {
+    "start": "live-server",
+    "build": "node generate-html.js"
+  },
+  "keywords": [
+    "cakes",
+    "website",
+    "markdown",
+    "html"
+  ],
+  "author": "KenfuQnK",
+  "license": "MIT",
+  "dependencies": {
+    "marked": "^8.0.0"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.0"
+  }
+}

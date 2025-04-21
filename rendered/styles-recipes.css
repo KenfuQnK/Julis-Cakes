@@ -62,7 +62,7 @@ h2 {
 /* Estilos para el layout de cards */
 .cards-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1rem;
     margin: 1rem 0;
 }
@@ -71,12 +71,15 @@ h2 {
     background: #fff4ed;
     border-radius: 8px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    padding: 1rem;
+    aspect-ratio: 1/1;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    min-height: 60px;
+    justify-content: end;
     transition: transform 0.3s, box-shadow 0.3s;
     position: relative;
+    text-align: left;
+    padding: 0.5rem;
 }
 
 .card:hover {
@@ -86,19 +89,19 @@ h2 {
 
 /* Estilos específicos para ingredientes */
 .ingredients-cards .card {
-    border-left: 4px solid #fc9f8d;
-    padding-left: 70px;
+    /*padding-top: 60px;*/
+    
 }
 
 .ingredients-cards .card:before {
     content: "imagen";
-    width: 60px;
-    height: 60px;
+    width: 90%;
+    height: 70%;
     background-color: #8cd9ff;
     position: absolute;
-    left: 0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -113,29 +116,28 @@ h2 {
 }
 
 .steps-cards .card {
-    border-left: 4px solid #8cd9ff;
-    padding-left: 70px;
+    padding-top: 60px;
 }
 
 .steps-cards .card:before {
     counter-increment: steps;
     content: "Paso " counter(steps);
     position: absolute;
-    bottom: 0.5rem;
-    right: 0.5rem;
+    top: 0.5rem;
+    left: 0.5rem;
     font-size: 0.8rem;
     color: #888;
 }
 
 .steps-cards .card:after {
     content: "imagen";
-    width: 60px;
-    height: 60px;
+    width: 90%;
+    height: 170px;
     background-color: #8cd9ff;
     position: absolute;
-    left: 0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -171,6 +173,7 @@ h2 {
 .recipe-card-title {
     padding: 0.5rem;
     flex: 1;
+    height: 120px;
 }
 
 .recipe-card-image {
@@ -244,12 +247,12 @@ h2 {
     }
     
     .cards-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
 }
 
 @media (max-width: 480px) {
     .cards-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
