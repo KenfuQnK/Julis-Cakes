@@ -17,9 +17,9 @@ renderer.list = function (body, ordered) {
 
 // Personalizar los elementos de lista (li) para que sean "cards"
 renderer.listitem = function (text) {
-  // Asegurar que el contenido de cada <li> se renderice correctamente
-  const content = marked.parseInline(text); 
-  return `<div class="card">${content}</div>`;
+    console.log('List item content:', text); // Depuración
+    const content = typeof text === 'object' ? JSON.stringify(text) : marked.parseInline(text); 
+    return `<div class="card">${content}</div>`;
 };
 
 // Leer la plantilla HTML
