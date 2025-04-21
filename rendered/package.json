@@ -1,0 +1,15 @@
+{
+  "name": "julis-cakes",
+  "version": "1.0.0",
+  "description": "Sitio web de Julis Cakes",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server"
+  },
+  "keywords": ["cakes", "website", "local"],
+  "author": "KenfuQnK",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
