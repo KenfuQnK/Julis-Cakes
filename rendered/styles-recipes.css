@@ -67,6 +67,7 @@ h2 {
     margin: 1rem 0;
 }
 
+/* Tarjetas básicas */
 .card {
     background: #fff4ed;
     border-radius: 8px;
@@ -74,12 +75,8 @@ h2 {
     aspect-ratio: 1/1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: end;
+    overflow: hidden;
     transition: transform 0.3s, box-shadow 0.3s;
-    position: relative;
-    text-align: left;
-    padding: 0.5rem;
 }
 
 .card:hover {
@@ -87,27 +84,30 @@ h2 {
     box-shadow: 0 8px 15px rgba(0,0,0,0.15);
 }
 
-/* Estilos específicos para ingredientes */
-.ingredients-cards .card {
-    /*padding-top: 60px;*/
-    
-}
-
-.ingredients-cards .card:before {
-    content: "imagen";
-    width: 90%;
-    height: 70%;
+.card-image {
     background-color: #8cd9ff;
-    position: absolute;
-    top: 0.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 5px;
+    height: 75%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-weight: bold;
+}
+
+.card-text {
+    padding: 10px;
+    height: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+/* Estilos específicos para ingredientes */
+.ingredients-cards .card {
+    /* border-left: 4px solid #fc9f8d; */
 }
 
 /* Estilos específicos para pasos */
@@ -116,34 +116,19 @@ h2 {
 }
 
 .steps-cards .card {
-    padding-top: 60px;
+    /* border-left: 4px solid #4d8bf0; */
 }
 
-.steps-cards .card:before {
-    counter-increment: steps;
-    content: "Paso " counter(steps);
+.card-number {
     position: absolute;
-    top: 0.5rem;
+    top: 0.3rem;
     left: 0.5rem;
     font-size: 0.8rem;
-    color: #888;
-}
-
-.steps-cards .card:after {
-    content: "imagen";
-    width: 90%;
-    height: 170px;
-    background-color: #8cd9ff;
-    position: absolute;
-    top: 0.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 2px 5px;
+    border-radius: 3px;
+    z-index: 1;
 }
 
 /* Estilos para la lista de recetas */
@@ -173,7 +158,6 @@ h2 {
 .recipe-card-title {
     padding: 0.5rem;
     flex: 1;
-    height: 120px;
 }
 
 .recipe-card-image {

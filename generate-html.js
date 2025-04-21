@@ -49,7 +49,10 @@ files.forEach(file => {
   
   // Leer contenido Markdown
   const filePath = path.join(recipesDir, file);
-  const markdownContent = fs.readFileSync(filePath, 'utf8');
+  let markdownContent = fs.readFileSync(filePath, 'utf8');
+  
+  // Eliminar los checkboxes del Markdown antes de procesarlo
+  markdownContent = markdownContent.replace(/- \[ \]/g, '-');
   
   // Convertir a HTML usando marked
   let htmlContent = marked.parse(markdownContent);
@@ -58,14 +61,37 @@ files.forEach(file => {
   // Transformar títulos
   htmlContent = htmlContent.replace(/<h1>(.*?)<\/h1>/g, '<h1 class="section-title">$1</h1>');
   
-  // Convertir listas en cards
+  // Convertir listas en cards para ingredientes y eliminar cualquier checkbox restante
   htmlContent = htmlContent.replace(/<ul>/g, '<div class="cards-container ingredients-cards">');
   htmlContent = htmlContent.replace(/<\/ul>/g, '</div>');
+  htmlContent = htmlContent.replace(/<li>(.*?)<\/li>/g, function(match, p1) {
+    // Eliminar cualquier checkbox que pudiera quedar en el HTML
+    let textContent = p1.replace(/<input[^>]*>/g, '').trim();
+    return `
+      <div class="card">
+        <div class="card-image">imagen</div>
+        <div class="card-text">${textContent}</div>
+      </div>
+    `;
+  });
   
+  // Convertir listas numeradas en cards para pasos
+  let stepCounter = 0;
   htmlContent = htmlContent.replace(/<ol>/g, '<div class="cards-container steps-cards">');
   htmlContent = htmlContent.replace(/<\/ol>/g, '</div>');
+  htmlContent = htmlContent.replace(/<li>(.*?)<\/li>/g, function(match, p1) {
+    stepCounter++;
+    return `
+      <div class="card">
+        <div class="card-number">Paso ${stepCounter}</div>
+        <div class="card-image">imagen</div>
+        <div class="card-text">${p1}</div>
+      </div>
+    `;
+  });
   
-  htmlContent = htmlContent.replace(/<li>(.*?)<\/li>/g, '<div class="card">$1</div>');
+  // Restablecer contador para el próximo archivo
+  stepCounter = 0;
   
   // Título y slug
   const originalTitle = path.basename(file, '.md');
