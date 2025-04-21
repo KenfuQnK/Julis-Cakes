@@ -31,9 +31,13 @@ jobs:
         template=$(cat rendered/template.html)
         for file in recipes/*.md; do
           [ -f "$file" ] || continue
+          # Crear un slug para el nombre del archivo
           title=$(basename "$file" .md)
+          slug=$(echo "$title" | iconv -t ascii//TRANSLIT | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/_/g')
+          # Convertir el contenido del Markdown a HTML
           content=$(marked "$file" | sed 's/[&/\]/\\&/g') # Escapar caracteres especiales
-          echo "$template" | sed "s/{{title}}/$title/g" | sed "s,{{content}},$content,g" > "rendered/${title}.html"
+          # Usar la plantilla para generar el HTML final
+          echo "$template" | sed "s/{{title}}/$title/g" | sed "s,{{content}},$content,g" > "rendered/${slug}.html"
         done
 
     # 5. Actualizar el archivo index.html con las recetas
@@ -44,7 +48,7 @@ jobs:
         for file in rendered/*.html; do
           [ "$file" != "rendered/template.html" ] || continue
           filename=$(basename "$file")
-          title=$(basename "$file" .html)
+          title=$(basename "$file" .html | sed 's/_/ /g; s/\b\(.\)/\u\1/g') # Convertir a título amigable
           echo "<li><a href='rendered/$filename'>$title</a></li>" >> index.html
         done
         echo "</ul></main><footer><p>© 2025 Julis Cakes</p></footer></body></html>" >> index.html
