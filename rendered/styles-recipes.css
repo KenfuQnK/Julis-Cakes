@@ -92,7 +92,6 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     font-weight: bold;
     z-index: 1;
 }
