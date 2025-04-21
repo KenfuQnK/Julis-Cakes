@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout del repositorio
+    # 1. Descargar el repositorio
     - name: Checkout repository
       uses: actions/checkout@v3
 
@@ -20,29 +20,42 @@ jobs:
       with:
         node-version: '16'
 
-    # 3. Instalar `marked`
+    # 3. Instalar `marked` para convertir Markdown a HTML
     - name: Install Marked (Markdown to HTML converter)
       run: npm install -g marked
 
-    # 4. Convertir Markdown a HTML usando la plantilla
-    - name: Convert Markdown to HTML with Template
+    # 4. Convertir archivos Markdown a HTML y usar la plantilla
+    - name: Convert Markdown to HTML
       run: |
-        template=$(cat template.html)
-        mkdir -p recipes
+        mkdir -p rendered
+        template=$(cat rendered/template.html)
         for file in recipes/*.md; do
           [ -f "$file" ] || continue
-          title=$(basename "$file" .md | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
+          title=$(basename "$file" .md)
           content=$(marked "$file" | sed 's/[&/\]/\\&/g') # Escapar caracteres especiales
-          echo "$template" | sed "s/{{title}}/$title/g" | sed "s,{{content}},$content,g" > "recipes/${title}.html"
+          echo "$template" | sed "s/{{title}}/$title/g" | sed "s,{{content}},$content,g" > "rendered/${title}.html"
         done
 
-    # 5. Commit y push de los archivos generados
+    # 5. Actualizar el archivo index.html con las recetas
+    - name: Update index.html
+      run: |
+        echo "<!DOCTYPE html>" > index.html
+        echo "<html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Julis Cakes</title><link rel='stylesheet' href='/styles.css'></head><body><header><h1>🎂 Julis Cakes</h1></header><main><h2>Recetas Disponibles</h2><ul>" >> index.html
+        for file in rendered/*.html; do
+          [ "$file" != "rendered/template.html" ] || continue
+          filename=$(basename "$file")
+          title=$(basename "$file" .html)
+          echo "<li><a href='rendered/$filename'>$title</a></li>" >> index.html
+        done
+        echo "</ul></main><footer><p>© 2025 Julis Cakes</p></footer></body></html>" >> index.html
+
+    # 6. Subir los cambios al repositorio
     - name: Commit and push changes
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git add recipes/*.html
-        git commit -m "Convert Markdown to HTML with template"
+        git add rendered/*.html index.html
+        git commit -m "Convert Markdown to HTML and update index"
         git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
