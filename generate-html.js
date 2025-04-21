@@ -33,10 +33,13 @@ const createSidebarHTML = (currentSlug) => {
   let sidebarHTML = '<h2 class="recipes-list-title">Listado de recetas</h2>';
   
   recipesList.forEach(recipe => {
+    const isActive = recipe.slug === currentSlug ? 'recipe-card-active' : '';
     sidebarHTML += `
-      <div class="recipe-card">
-        <div class="recipe-card-title">${recipe.title}</div>
-        <a href="${recipe.slug}.html"><div class="recipe-card-image">imagen</div></a>
+      <div class="recipe-card ${isActive}">
+        <a href="${recipe.slug}.html">
+          <div class="recipe-card-title">${recipe.title}</div>
+          <div class="recipe-card-image">imagen</div>
+        </a>
       </div>
     `;
   });
@@ -102,7 +105,7 @@ files.forEach(file => {
     .replace(/[^\w\-]/g, '')
     .toLowerCase();
   
-  // Generar HTML para el sidebar
+  // Generar HTML para el sidebar con la receta actual resaltada
   const sidebarHTML = createSidebarHTML(slug);
   
   // Crear HTML final - con reemplazos más precisos
@@ -110,8 +113,9 @@ files.forEach(file => {
     .replace(/\{\{title\}\}/g, originalTitle)
     .replace('{{content}}', htmlContent);
   
-  // Reemplazar el sidebar placeholder
-  finalHtml = finalHtml.replace('<div class="recipes-list-column">\n        <h2 class="recipes-list-title">Listado de recetas</h2>\n        <div class="recipe-card">\n            <div class="recipe-card-title">Receta 1</div>\n            <div class="recipe-card-image">imagen</div>\n        </div>\n        <div class="recipe-card">\n            <div class="recipe-card-title">Receta 2</div>\n            <div class="recipe-card-image">imagen</div>\n        </div>\n        <div class="recipe-card">\n            <div class="recipe-card-title">Receta 3</div>\n            <div class="recipe-card-image">imagen</div>\n        </div>\n    </div>', `<div class="recipes-list-column">\n        ${sidebarHTML}\n    </div>`);
+  // Reemplazar el sidebar placeholder - buscamos la estructura del div y su contenido
+  const sidebarRegex = /<div class="recipes-list-column">[\s\S]*?<\/div>/;
+  finalHtml = finalHtml.replace(sidebarRegex, `<div class="recipes-list-column">\n        ${sidebarHTML}\n    </div>`);
   
   // Guardar el archivo HTML
   const outputFilePath = path.join(renderedDir, `${slug}.html`);
@@ -155,5 +159,10 @@ const indexHTML = `<!DOCTYPE html>
 
 fs.writeFileSync(path.join(__dirname, 'index.html'), indexHTML, 'utf8');
 console.log('✅ Página de índice creada');
+
+// Asegurarnos de que el archivo CSS también esté actualizado
+const cssContent = fs.readFileSync(path.join(__dirname, 'styles.css'), 'utf8');
+fs.writeFileSync(path.join(renderedDir, 'styles-recipes.css'), fs.readFileSync(path.join(__dirname, 'rendered', 'styles-recipes.css'), 'utf8'), 'utf8');
+console.log('✅ Archivos CSS actualizados');
 
 console.log('\n✨ Procesamiento completado');

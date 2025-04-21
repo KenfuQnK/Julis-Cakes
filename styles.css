@@ -3,78 +3,19 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
-}
-
-header {
-    background: #ff6b6b;
-    color: #fff;
-    padding: 1rem 0;
-    text-align: center;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 2rem;
-}
-
-main {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-footer {
-    text-align: center;
-    padding: 1rem 0;
-    background: #333;
-    color: #fff;
-    margin-top: 2rem;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-ul li {
-    margin: 0.5rem 0;
-}
-
-ul li a {
-    text-decoration: none;
-    color: #ff6b6b;
-}
-
-ul li a:hover {
-    text-decoration: underline;
-}
-
-
-/************/
-
-
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
     background-color: #f5f5f5;
     color: #333;
     display: flex;
     min-height: 100vh;
 }
 
-/* Layout principal de 3 columnas */
-.chat-column {
+/* Layout principal de 3 columnas (reordenadas) */
+.recipes-list-column {
     width: 25%;
-    background-color: #f0f0f0;
+    background-color: #f9f9f9;
     border-right: 1px solid #ddd;
     padding: 1rem;
+    overflow-y: auto;
 }
 
 .recipe-column {
@@ -84,12 +25,125 @@ body {
     overflow-y: auto;
 }
 
-.recipes-list-column {
+.chat-column {
     width: 25%;
-    background-color: #f9f9f9;
+    background-color: #f0f0f0;
     border-left: 1px solid #ddd;
     padding: 1rem;
-    overflow-y: auto;
+}
+
+/* Título de la receta */
+.recipe-title {
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+/* Estilos para secciones */
+.section-title {
+    color: white;
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Estilo para las secciones de consejos */
+h2 {
+    color: white;
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+/* Estilos para el layout de cards */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+/* Tarjetas básicas */
+.card {
+    background: #fff4ed;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    aspect-ratio: 1/1;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+}
+
+.card-image {
+    background-color: #8cd9ff;
+    height: 75%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.card-text {
+    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    min-height: 25%;
+    max-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9rem;
+    background-color: #fff4ed;
+    z-index: 2;
+}
+
+.card-text-content {
+    width: 100%;
+}
+
+/* Estilos específicos para ingredientes */
+.ingredients-cards .card {
+    /* border-left: 4px solid #fc9f8d; */
+}
+
+/* Estilos específicos para pasos */
+.steps-cards {
+    counter-reset: steps;
+}
+
+.steps-cards .card {
+    /* border-left: 4px solid #4d8bf0; */
+}
+
+.card-number {
+    position: absolute;
+    top: 0.3rem;
+    left: 0.5rem;
+    font-size: 0.8rem;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 2px 5px;
+    border-radius: 3px;
+    z-index: 3;
 }
 
 /* Estilos para la lista de recetas */
@@ -216,6 +270,20 @@ body {
     transform: translateY(-2px);
 }
 
+/* Enlaces activos en el listado de recetas */
+.recipe-card a {
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    width: 100%;
+}
+
+.recipe-card-active {
+    background-color: #ffeded;
+    border-left: 4px solid #ff6b6b;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     body {
         flex-direction: column;
@@ -229,5 +297,9 @@ body {
         width: calc(100% - 2rem);
         position: static;
         margin-top: 1rem;
+    }
+    
+    .cards-container {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
 }
