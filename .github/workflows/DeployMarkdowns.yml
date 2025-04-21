@@ -32,7 +32,7 @@ jobs:
     - name: Update index.html
       run: |
         echo "<!DOCTYPE html>" > index.html
-        echo "<html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Julis Cakes</title><link rel='stylesheet' href='/styles.css'></head><body><header><h1>🎂 Julis Cakes</h1></header><main><h2>Recetas Disponibles</h2><ul>" >> index.html
+        echo "<html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Julis Cakes</title><link rel='stylesheet' href='styles.css'></head><body><header><h1>🎂 Julis Cakes</h1></header><main><h2>Recetas Disponibles</h2><ul>" >> index.html
         for file in rendered/*.html; do
           [ "$file" != "rendered/template.html" ] || continue
           filename=$(basename "$file")
