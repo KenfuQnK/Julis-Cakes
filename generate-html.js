@@ -70,7 +70,7 @@ files.forEach(file => {
     return `
       <div class="card">
         <div class="card-image">imagen</div>
-        <div class="card-text">${textContent}</div>
+        <div class="card-text"><div class="card-text-content">${textContent}</div></div>
       </div>
     `;
   });
@@ -85,7 +85,7 @@ files.forEach(file => {
       <div class="card">
         <div class="card-number">Paso ${stepCounter}</div>
         <div class="card-image">imagen</div>
-        <div class="card-text">${p1}</div>
+        <div class="card-text"><div class="card-text-content">${p1}</div></div>
       </div>
     `;
   });
