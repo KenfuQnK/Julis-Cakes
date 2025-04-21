@@ -12,23 +12,39 @@ const renderer = new marked.Renderer();
 
 // Personalizar las listas (ul y ol) para que se conviertan en contenedores de cards
 renderer.list = function (body, ordered) {
-  return `<div class="cards-container">${body}</div>`;
+  const type = ordered ? "ol" : "ul";
+  return `<div class="cards-container" data-list-type="${type}">${body}</div>`;
 };
 
-// Personalizar los elementos de lista (li) para que sean "cards"
+// Manejo personalizado para elementos de lista con checkboxes
 renderer.listitem = function (text) {
-    // Simplificamos el manejo del texto - usamos directamente el texto
-    return `<div class="card">${text}</div>`;
+  // Verificar si es un elemento de lista de verificación
+  if (text.includes('type="checkbox"')) {
+    // Extraer el texto después del checkbox
+    const labelText = text.replace(/<input[^>]*>/, '').trim();
+    return `<div class="card">${labelText}</div>`;
+  }
+  
+  // Para elementos de lista normales
+  return `<div class="card">${text}</div>`;
 };
 
-// Configuramos las opciones de marked para manejar correctamente las listas
+// Agregar soporte para tareas/checkboxes
+renderer.checkbox = function(checked) {
+  return '';  // No mostrar el checkbox, solo el texto
+};
+
+// Configuramos las opciones de marked
 const markedOptions = {
-    renderer: renderer,
-    gfm: true,
-    breaks: true,
-    sanitize: false,
-    smartLists: true,
-    smartypants: true
+  renderer: renderer,
+  gfm: true,           // GitHub Flavored Markdown
+  breaks: true,        // Convertir saltos de línea en <br>
+  headerIds: true,     // Añadir IDs a los encabezados
+  mangle: false,       // No codificar caracteres @ en email links
+  smartLists: true,    // Usar reglas tipográficas para listas
+  smartypants: false,  // No usar reglas tipográficas para puntuación
+  xhtml: false,        // No cerrar etiquetas vacías como en XHTML
+  highlight: null,     // No resaltar sintaxis de código
 };
 
 // Leer la plantilla HTML
@@ -67,10 +83,11 @@ files.forEach(file => {
     .replace(/"/g, '&quot;') // Escapar comillas dobles
     .replace(/'/g, '&#39;'); // Escapar comillas simples
 
-  // Reemplazar los marcadores en la plantilla
-  const finalHtml = template
-    .replace(/\{\{title\}\}/g, escapedTitle) // Reemplazar todas las ocurrencias
-    .replace('{{content}}', htmlContent);
+  // Reemplazar TODAS las ocurrencias de {{title}} en la plantilla
+  let finalHtml = template.replace(/\{\{title\}\}/g, escapedTitle);
+  
+  // Reemplazar {{content}} con el contenido HTML generado
+  finalHtml = finalHtml.replace('{{content}}', htmlContent);
 
   // Guardar el archivo HTML en la carpeta `rendered`
   const outputFilePath = path.join(renderedDir, `${slug}.html`);
