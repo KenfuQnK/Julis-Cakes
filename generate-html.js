@@ -12,13 +12,14 @@ const renderer = new marked.Renderer();
 
 // Personalizar las listas (ul y ol) para que se conviertan en contenedores de cards
 renderer.list = function (body, ordered) {
-  const tag = ordered ? 'ol' : 'ul';
   return `<div class="cards-container">${body}</div>`;
 };
 
 // Personalizar los elementos de lista (li) para que sean "cards"
 renderer.listitem = function (text) {
-  return `<div class="card">${text}</div>`;
+  // Asegurar que el contenido de cada <li> se renderice correctamente
+  const content = marked.parseInline(text); 
+  return `<div class="card">${content}</div>`;
 };
 
 // Leer la plantilla HTML
