@@ -7,6 +7,20 @@ const recipesDir = path.join(__dirname, 'recipes');
 const renderedDir = path.join(__dirname, 'rendered');
 const templatePath = path.join(renderedDir, 'template.html');
 
+// Crear un renderer personalizado para "marked"
+const renderer = new marked.Renderer();
+
+// Personalizar las listas (ul y ol) para que se conviertan en contenedores de cards
+renderer.list = function (body, ordered) {
+  const tag = ordered ? 'ol' : 'ul';
+  return `<div class="cards-container">${body}</div>`;
+};
+
+// Personalizar los elementos de lista (li) para que sean "cards"
+renderer.listitem = function (text) {
+  return `<div class="card">${text}</div>`;
+};
+
 // Leer la plantilla HTML
 const template = fs.readFileSync(templatePath, 'utf8');
 
@@ -23,8 +37,8 @@ files.forEach(file => {
   const filePath = path.join(recipesDir, file);
   const markdownContent = fs.readFileSync(filePath, 'utf8');
 
-  // Convertir el contenido a HTML
-  const htmlContent = marked(markdownContent);
+  // Convertir el contenido a HTML usando el renderer personalizado
+  const htmlContent = marked(markdownContent, { renderer });
 
   // Generar un slug para el nombre del archivo
   const originalTitle = path.basename(file, '.md');
