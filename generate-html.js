@@ -17,9 +17,18 @@ renderer.list = function (body, ordered) {
 
 // Personalizar los elementos de lista (li) para que sean "cards"
 renderer.listitem = function (text) {
-    console.log('List item content:', text); // Depuración
-    const content = typeof text === 'object' ? JSON.stringify(text) : marked.parseInline(text); 
-    return `<div class="card">${content}</div>`;
+    // Simplificamos el manejo del texto - usamos directamente el texto
+    return `<div class="card">${text}</div>`;
+};
+
+// Configuramos las opciones de marked para manejar correctamente las listas
+const markedOptions = {
+    renderer: renderer,
+    gfm: true,
+    breaks: true,
+    sanitize: false,
+    smartLists: true,
+    smartypants: true
 };
 
 // Leer la plantilla HTML
@@ -39,7 +48,7 @@ files.forEach(file => {
   const markdownContent = fs.readFileSync(filePath, 'utf8');
 
   // Convertir el contenido a HTML usando el renderer personalizado
-  const htmlContent = marked(markdownContent, { renderer });
+  const htmlContent = marked(markdownContent, markedOptions);
 
   // Generar un slug para el nombre del archivo
   const originalTitle = path.basename(file, '.md');
@@ -60,7 +69,7 @@ files.forEach(file => {
 
   // Reemplazar los marcadores en la plantilla
   const finalHtml = template
-    .replace('{{title}}', escapedTitle)
+    .replace(/\{\{title\}\}/g, escapedTitle) // Reemplazar todas las ocurrencias
     .replace('{{content}}', htmlContent);
 
   // Guardar el archivo HTML en la carpeta `rendered`
