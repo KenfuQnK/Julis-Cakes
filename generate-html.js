@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { marked } = require('marked');
+const cheerio = require('cheerio'); // Añadir esta dependencia
 
 // Rutas
 const recipesDir = path.join(__dirname, 'recipes');
@@ -50,6 +51,15 @@ const createSidebarHTML = (currentSlug) => {
 files.forEach(file => {
   console.log(`\n🔄 Procesando: ${file}`);
   
+  // Definir slug al inicio para usarlo en todo el procesamiento
+  const originalTitle = path.basename(file, '.md');
+  const slug = originalTitle
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '_')
+    .replace(/[^\w\-]/g, '')
+    .toLowerCase();
+  
   // Leer contenido Markdown
   const filePath = path.join(recipesDir, file);
   let markdownContent = fs.readFileSync(filePath, 'utf8');
@@ -60,50 +70,65 @@ files.forEach(file => {
   // Convertir a HTML usando marked
   let htmlContent = marked.parse(markdownContent);
   
-  // Modificar el HTML para formato de cards
+  // Cargar el HTML en cheerio para manipulación
+  const $ = cheerio.load(htmlContent);
+  
   // Transformar títulos
-  htmlContent = htmlContent.replace(/<h1>(.*?)<\/h1>/g, '<h1 class="section-title">$1</h1>');
+  $('h1').addClass('section-title');
   
-  // Convertir listas en cards para ingredientes y eliminar cualquier checkbox restante
-  htmlContent = htmlContent.replace(/<ul>/g, '<div class="cards-container ingredients-cards">');
-  htmlContent = htmlContent.replace(/<\/ul>/g, '</div>');
-  htmlContent = htmlContent.replace(/<li>(.*?)<\/li>/g, function(match, p1) {
-    // Eliminar cualquier checkbox que pudiera quedar en el HTML
-    let textContent = p1.replace(/<input[^>]*>/g, '').trim();
-    return `
-      <div class="card">
-        <div class="card-image">imagen</div>
-        <div class="card-text"><div class="card-text-content">${textContent}</div></div>
-      </div>
-    `;
+  // Procesar ingredientes (ul -> cards)
+  let ingredienteCounter = 0;
+  $('ul').each(function() {
+    const ul = $(this);
+    const cardsContainer = $('<div class="cards-container ingredients-cards"></div>');
+    
+    ul.find('li').each(function() {
+      ingredienteCounter++;
+      const li = $(this);
+      const textContent = li.text().trim();
+      const imagePath = `/img/recipes/${slug}/ingredients/ingrediente_${ingredienteCounter}.png`;
+      
+      const card = $(`
+        <div class="card">
+          <div class="card-image"><img src="${imagePath}" onerror="this.src='/img/recipes/placeholder.jpg'" alt="${textContent}" /></div>
+          <div class="card-text"><div class="card-text-content">${textContent}</div></div>
+        </div>
+      `);
+      
+      cardsContainer.append(card);
+    });
+    
+    ul.replaceWith(cardsContainer);
   });
   
-  // Convertir listas numeradas en cards para pasos
+  // Procesar pasos (ol -> cards)
   let stepCounter = 0;
-  htmlContent = htmlContent.replace(/<ol>/g, '<div class="cards-container steps-cards">');
-  htmlContent = htmlContent.replace(/<\/ol>/g, '</div>');
-  htmlContent = htmlContent.replace(/<li>(.*?)<\/li>/g, function(match, p1) {
-    stepCounter++;
-    return `
-      <div class="card">
-        <div class="card-number">Paso ${stepCounter}</div>
-        <div class="card-image">imagen</div>
-        <div class="card-text"><div class="card-text-content">${p1}</div></div>
-      </div>
-    `;
+  $('ol').each(function() {
+    const ol = $(this);
+    const cardsContainer = $('<div class="cards-container steps-cards"></div>');
+    
+    ol.find('li').each(function() {
+      stepCounter++;
+      const li = $(this);
+      const textContent = li.html().trim(); // Usamos html() en lugar de text() para preservar formateo interior
+      const imagePath = `/img/recipes/${slug}/directions/step_${stepCounter}.png`;
+      
+      const card = $(`
+        <div class="card">
+          <div class="card-number">Paso ${stepCounter}</div>
+          <div class="card-image"><img src="${imagePath}" onerror="this.src='/img/recipes/placeholder.jpg'" alt="Paso ${stepCounter}" /></div>
+          <div class="card-text"><div class="card-text-content">${textContent}</div></div>
+        </div>
+      `);
+      
+      cardsContainer.append(card);
+    });
+    
+    ol.replaceWith(cardsContainer);
   });
   
-  // Restablecer contador para el próximo archivo
-  stepCounter = 0;
-  
-  // Título y slug
-  const originalTitle = path.basename(file, '.md');
-  const slug = originalTitle
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/\s+/g, '_')
-    .replace(/[^\w\-]/g, '')
-    .toLowerCase();
+  // Convertir de vuelta a HTML
+  htmlContent = $.html();
   
   // Generar HTML para el sidebar con la receta actual resaltada
   const sidebarHTML = createSidebarHTML(slug);
@@ -161,7 +186,6 @@ fs.writeFileSync(path.join(__dirname, 'index.html'), indexHTML, 'utf8');
 console.log('✅ Página de índice creada');
 
 // Asegurarnos de que el archivo CSS también esté actualizado
-const cssContent = fs.readFileSync(path.join(__dirname, 'styles.css'), 'utf8');
 fs.writeFileSync(path.join(renderedDir, 'styles-recipes.css'), fs.readFileSync(path.join(__dirname, 'rendered', 'styles-recipes.css'), 'utf8'), 'utf8');
 console.log('✅ Archivos CSS actualizados');
 
