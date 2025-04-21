@@ -86,11 +86,11 @@ files.forEach(file => {
       ingredienteCounter++;
       const li = $(this);
       const textContent = li.text().trim();
-      const imagePath = `./img/recipes/${slug}/ingredients/ingrediente_${ingredienteCounter}.png`;
+      const imagePath = `../img/recipes/${slug}/ingredients/ingrediente_${ingredienteCounter}.png`;
       
       const card = $(`
         <div class="card">
-          <div class="card-image"><img src="${imagePath}" onerror="if(this.src!='./img/recipes/placeholder.jpg')this.src='./img/recipes/placeholder.jpg';else this.onerror=null;" alt="${textContent}" />
+          <div class="card-image"><img src="${imagePath}" onerror="if(this.src!='../img/recipes/placeholder.jpg')this.src='../img/recipes/placeholder.jpg';else this.onerror=null;" alt="${textContent}" />
           <div class="card-text"><div class="card-text-content">${textContent}</div></div>
         </div>
       `);
@@ -111,12 +111,12 @@ files.forEach(file => {
       stepCounter++;
       const li = $(this);
       const textContent = li.html().trim(); // Usamos html() en lugar de text() para preservar formateo interior
-      const imagePath = `./img/recipes/${slug}/directions/step_${stepCounter}.png`;
+      const imagePath = `../img/recipes/${slug}/directions/step_${stepCounter}.png`;
       
       const card = $(`
         <div class="card">
           <div class="card-number">Paso ${stepCounter}</div>
-          <div class="card-image"><img src="${imagePath}" onerror=""if(this.src!='./img/recipes/placeholder.jpg')this.src='./img/recipes/placeholder.jpg';else this.onerror=null;" alt="${stepCounter}" />
+          <div class="card-image"><img src="${imagePath}" onerror=""if(this.src!='../img/recipes/placeholder.jpg')this.src='../img/recipes/placeholder.jpg';else this.onerror=null;" alt="${stepCounter}" />
           <div class="card-text"><div class="card-text-content">${textContent}</div></div>
         </div>
       `);
