@@ -100,3 +100,38 @@ ul li a:hover {
         font-size: 0.9rem;
     }
 }
+
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+/* Estilos mejorados para los elementos tipo card */
+.card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    border-left: 3px solid #ff6b6b;
+}
+
+/* Estilo específico para listas con viñetas (ingredientes) */
+[data-list-type="ul"] .card {
+    border-left-color: #ff6b6b;
+}
+
+/* Estilo específico para listas numeradas (pasos) */
+[data-list-type="ol"] .card {
+    border-left-color: #4d8bf0;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
