@@ -1,14 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Recetas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <h1>Recetas Disponibles</h1>
-    <ul>
-        <li><a href="recipes/receta1.html">Receta 1</a></li>
-        <li><a href="recipes/receta2.html">Receta 2</a></li>
-        <!-- Añade manualmente más enlaces o genera este archivo automáticamente -->
-    </ul>
+    <header>
+        <h1>🎂 {{title}}</h1>
+        <nav>
+            <a href="/">Inicio</a>
+        </nav>
+    </header>
+    <main>
+        {{content}}
+    </main>
+    <footer>
+        <p>© 2025 Julis Cakes - Todas las recetas</p>
+    </footer>
 </body>
 </html>
