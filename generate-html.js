@@ -90,7 +90,7 @@ files.forEach(file => {
       
       const card = $(`
         <div class="card">
-          <div class="card-image"><img src="${imagePath}" onerror="if(this.src!='../img/recipes/placeholder.jpg')this.src='../img/recipes/placeholder.jpg';else this.onerror=null;" alt="${textContent}" />
+          <div class="card-image"><img src="${imagePath}" onerror="if(this.src!='../img/recipes/placeholder.jpg')this.src='../img/recipes/placeholder.jpg';else this.onerror=null;" alt="${textContent}" /></div>
           <div class="card-text"><div class="card-text-content">${textContent}</div></div>
         </div>
       `);
@@ -116,7 +116,7 @@ files.forEach(file => {
       const card = $(`
         <div class="card">
           <div class="card-number">Paso ${stepCounter}</div>
-          <div class="card-image"><img src="${imagePath}" onerror=""if(this.src!='../img/recipes/placeholder.jpg')this.src='../img/recipes/placeholder.jpg';else this.onerror=null;" alt="${stepCounter}" />
+          <div class="card-image"><img src="${imagePath}" onerror=""if(this.src!='../img/recipes/placeholder.jpg')this.src='../img/recipes/placeholder.jpg';else this.onerror=null;" alt="${stepCounter}" /></div>
           <div class="card-text"><div class="card-text-content">${textContent}</div></div>
         </div>
       `);
