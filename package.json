@@ -1,6 +1,6 @@
 {
   "name": "julis-cakes",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "expo-router/entry.js",
   "version": "1.0.0",
   "homepage": "https://kenfuqnk.github.io/Julis-Cakes",
   "scripts": {
