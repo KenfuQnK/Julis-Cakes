@@ -3,7 +3,7 @@ name: Deploy Expo Web to GitHub Pages
 on:
   push:
     branches:
-      - main  # O la rama que uses como principal
+      - main
 
 jobs:
   build-and-deploy:
@@ -29,11 +29,16 @@ jobs:
 
       - name: Configure for GitHub Pages
         run: |
-          cd web-build
+          cd dist
           cp index.html 404.html
-          echo "window.location.pathname = window.location.pathname.replace(/^\\/Julis-Cakes/, '');" > gh-pages-fix.js
+          echo "// Fix para rutas en GitHub Pages" > gh-pages-fix.js
+          echo "if (window.location.pathname.startsWith('/Julis-Cakes') && window.location.pathname !== '/Julis-Cakes/') {" >> gh-pages-fix.js
+          echo "  const withoutPrefix = window.location.pathname.replace(/^\\/Julis-Cakes/, '');" >> gh-pages-fix.js
+          echo "  window.history.replaceState(null, null, withoutPrefix || '/');" >> gh-pages-fix.js
+          echo "}" >> gh-pages-fix.js
           sed -i '/<head>/a <script src="gh-pages-fix.js"></script>' index.html
           sed -i '/<head>/a <script src="gh-pages-fix.js"></script>' 404.html
+          # Asegurar que las rutas son relativas en lugar de absolutas
           sed -i 's|href="/|href="./|g' index.html
           sed -i 's|href="/|href="./|g' 404.html
           sed -i 's|src="/|src="./|g' index.html

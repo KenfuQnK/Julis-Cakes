@@ -52,11 +52,24 @@ function RootNavigator() {
 }
 
 export default function Navigation() {
+  // Determinar la base URL para compatibilidad con GitHub Pages
+  const linking = {
+    prefixes: [
+      'https://kenfuqnk.github.io/Julis-Cakes',
+      Linking.createURL('/')
+    ],
+    config: {
+      screens: {
+        Home: '',
+        Recipe: 'recipe/:id',
+        NotFound: '*',
+      },
+    }
+  };
+
   return (
     <NavigationContainer
-      linking={LinkingConfiguration}
-      // Personalización para web vs. móvil
-      // En web, se usa el estilo de navegación diferente
+      linking={linking}
       documentTitle={{
         formatter: (options, route) =>
           options?.title !== undefined
