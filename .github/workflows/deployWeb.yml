@@ -25,11 +25,11 @@ jobs:
         run: npm ci
 
       - name: Build web version
-        run: npx expo export
+        run: npx expo export:web
 
       - name: Configure for GitHub Pages
         run: |
-          cd dist
+          cd web-build
           cp index.html 404.html
           echo "// Fix para rutas en GitHub Pages" > gh-pages-fix.js
           echo "if (window.location.pathname.startsWith('/Julis-Cakes') && window.location.pathname !== '/Julis-Cakes/') {" >> gh-pages-fix.js
@@ -48,4 +48,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./web-build

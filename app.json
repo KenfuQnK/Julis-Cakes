@@ -21,7 +21,7 @@
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/images/favicon.png",
-      "publicPath": "./",
+      "publicPath": "/Julis-Cakes/",
         "baseUrl": "https://kenfuqnk.github.io/Julis-Cakes/",
   "name": "Juli's Cakes"
     },

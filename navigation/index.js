@@ -1,11 +1,11 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Platform } from 'react-native';
+import * as Linking from 'expo-linking';
 
 import HomeScreen from '../screens/HomeScreen';
 import RecipeScreen from '../screens/RecipeScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import LinkingConfiguration from './LinkingConfiguration';
 import Colors from '../constants/Colors';
 
 // Crear los stacks de navegación
@@ -52,7 +52,7 @@ function RootNavigator() {
 }
 
 export default function Navigation() {
-  // Determinar la base URL para compatibilidad con GitHub Pages
+  // Configuración del linking para compatibilidad con GitHub Pages
   const linking = {
     prefixes: [
       'https://kenfuqnk.github.io/Julis-Cakes',
