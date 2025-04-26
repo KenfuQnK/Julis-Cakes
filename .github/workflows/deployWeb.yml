@@ -25,10 +25,22 @@ jobs:
         run: npm ci
 
       - name: Build web version
-        run: npx expo export:web
+        run: npx expo export
+
+      - name: Configure for GitHub Pages
+        run: |
+          cd web-build
+          cp index.html 404.html
+          echo "window.location.pathname = window.location.pathname.replace(/^\\/Julis-Cakes/, '');" > gh-pages-fix.js
+          sed -i '/<head>/a <script src="gh-pages-fix.js"></script>' index.html
+          sed -i '/<head>/a <script src="gh-pages-fix.js"></script>' 404.html
+          sed -i 's|href="/|href="./|g' index.html
+          sed -i 's|href="/|href="./|g' 404.html
+          sed -i 's|src="/|src="./|g' index.html
+          sed -i 's|src="/|src="./|g' 404.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./web-build
+          publish_dir: ./dist
