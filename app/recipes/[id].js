@@ -1,12 +1,11 @@
+// [id].js (pantalla de detalle de receta adaptada a Tailwind)
 import { useLocalSearchParams } from 'expo-router';
-import { View, StyleSheet, useWindowDimensions, Platform } from 'react-native';
+import { View, useWindowDimensions, Platform } from 'react-native';
 import { useState, useEffect } from 'react';
 import RecipesList from '../../components/screens/RecipesList';
 import RecipeDetail from '../../components/screens/RecipeDetail';
 import ChatSection from '../../components/screens/ChatSection';
 import { recipes } from '../../data/recipes';
-import Colors from '../../constants/Colors';
-import Layout from '../../constants/Layout';
 
 export default function RecipeScreen() {
   const { id } = useLocalSearchParams();
@@ -26,8 +25,8 @@ export default function RecipeScreen() {
 
   if (width < 768) {
     return (
-      <View style={styles.container}>
-        <View style={styles.recipeDetailContainer}>
+      <View className="flex-1">
+        <View className="flex-1 bg-primary">
           <RecipeDetail recipe={currentRecipe} />
         </View>
       </View>
@@ -36,11 +35,11 @@ export default function RecipeScreen() {
 
   if (width < 1024) {
     return (
-      <View style={styles.container}>
-        <View style={styles.sidebarContainer}>
+      <View className="flex-1 flex-row">
+        <View className="w-1/3 min-w-[200px] max-w-[300px] border-r border-border">
           <RecipesList recipes={recipes} currentRecipeId={currentRecipe.id} />
         </View>
-        <View style={styles.recipeDetailContainer}>
+        <View className="flex-1 bg-primary">
           <RecipeDetail recipe={currentRecipe} />
         </View>
       </View>
@@ -48,23 +47,16 @@ export default function RecipeScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.sidebarContainer}>
+    <View className="flex-1 flex-row">
+      <View className="w-1/4 min-w-[200px] max-w-[300px] border-r border-border">
         <RecipesList recipes={recipes} currentRecipeId={currentRecipe.id} />
       </View>
-      <View style={styles.recipeDetailContainer}>
+      <View className="flex-1 bg-primary">
         <RecipeDetail recipe={currentRecipe} />
       </View>
-      <View style={styles.chatContainer}>
+      <View className="w-1/4 min-w-[200px] max-w-[300px] border-l border-border">
         <ChatSection />
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, flexDirection: 'row' },
-  sidebarContainer: { width: '25%', maxWidth: 300, minWidth: 200, ...Platform.select({ web: { borderRightWidth: 1, borderRightColor: Colors.border }, default: { elevation: 2 } }) },
-  recipeDetailContainer: { flex: 1, backgroundColor: Colors.primary },
-  chatContainer: { width: '25%', maxWidth: 300, minWidth: 200, ...Platform.select({ web: { borderLeftWidth: 1, borderLeftColor: Colors.border }, default: { elevation: 2 } }) },
-});

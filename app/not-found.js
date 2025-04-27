@@ -1,38 +1,29 @@
+// not-found.js (pantalla 404 actualizada a Tailwind)
 import { useRouter } from 'expo-router';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Colors from '../constants/Colors';
-import Layout from '../constants/Layout';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 export default function NotFoundScreen() {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>¡Oops!</Text>
-      <Text style={styles.subtitle}>No encontramos esta página</Text>
+    <View className="flex-1 bg-background items-center justify-center p-6">
+      <Text className="text-4xl font-bold text-primary mb-2">¡Oops!</Text>
+      <Text className="text-xl mb-6 text-text">No encontramos esta página</Text>
 
-      <View style={styles.emoji}>
-        <Text style={styles.emojiText}>🍰</Text>
+      <View className="my-6">
+        <Text className="text-6xl">🍰</Text>
       </View>
 
-      <Text style={styles.message}>
+      <Text className="text-base text-center mb-6 max-w-sm text-text">
         Parece que el postre que estabas buscando no está en nuestra cocina.
       </Text>
 
-      <TouchableOpacity style={styles.button} onPress={() => router.replace('/')}>
-        <Text style={styles.buttonText}>Volver al Inicio</Text>
+      <TouchableOpacity
+        className="bg-primary px-6 py-3 rounded-md"
+        onPress={() => router.replace('/')}
+      >
+        <Text className="text-white font-bold text-base">Volver al Inicio</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center', padding: Layout.padding.large },
-  title: { fontSize: Layout.fontSize.xxlarge, fontWeight: 'bold', color: Colors.primary, marginBottom: Layout.padding.small },
-  subtitle: { fontSize: Layout.fontSize.large, marginBottom: Layout.padding.large, color: Colors.text },
-  emoji: { marginVertical: Layout.padding.large },
-  emojiText: { fontSize: 80 },
-  message: { fontSize: Layout.fontSize.medium, textAlign: 'center', marginBottom: Layout.padding.large, maxWidth: 400, color: Colors.text },
-  button: { backgroundColor: Colors.primary, paddingHorizontal: Layout.padding.large, paddingVertical: Layout.padding.medium, borderRadius: Layout.borderRadius.medium },
-  buttonText: { color: Colors.textLight, fontWeight: 'bold', fontSize: Layout.fontSize.medium },
-});
