@@ -1,0 +1,178 @@
+import type { Recipe } from "@/src/types/recipe";
+
+const ingredient = (id: string, name: string, amount: string) => ({
+  id,
+  name,
+  amount,
+});
+const step = (id: string, description: string, title?: string) => ({
+  id,
+  description,
+  title,
+});
+
+export const seedRecipes: Recipe[] = [
+  {
+    id: "brazo-de-gitano",
+    title: "Brazo de Gitano",
+    description:
+      "Un clásico esponjoso relleno de crema de avellanas, perfecto para compartir.",
+    totalTimeMinutes: 50,
+    servings: 8,
+    category: "desserts",
+    ingredients: [
+      ingredient("bg-1", "Claras de huevo", "4"),
+      ingredient("bg-2", "Yemas de huevo", "4"),
+      ingredient("bg-3", "Azúcar", "125 g"),
+      ingredient("bg-4", "Harina de trigo", "75 g"),
+      ingredient("bg-5", "Harina de maíz", "50 g"),
+      ingredient("bg-6", "Levadura química", "½ sobre"),
+      ingredient("bg-7", "Crema de avellanas", "Al gusto"),
+      ingredient("bg-8", "Azúcar glas", "Para espolvorear"),
+    ],
+    steps: [
+      step(
+        "bg-s1",
+        "Precalienta el horno a 180 °C y prepara una bandeja con papel vegetal.",
+        "Prepara el horno",
+      ),
+      step(
+        "bg-s2",
+        "Separa las claras de las yemas en dos recipientes limpios.",
+        "Separa los huevos",
+      ),
+      step("bg-s3", "Bate las claras hasta que estén firmes y brillantes."),
+      step("bg-s4", "Añade el azúcar y las yemas poco a poco hasta integrar."),
+      step("bg-s5", "Tamiza las harinas y la levadura sobre la mezcla."),
+      step("bg-s6", "Extiende la masa y hornea durante 10–12 minutos."),
+      step(
+        "bg-s7",
+        "Desmolda sobre un paño limpio y enrolla mientras está caliente.",
+      ),
+      step(
+        "bg-s8",
+        "Deja templar, rellena con crema de avellanas y vuelve a enrollar.",
+      ),
+    ],
+    isFavorite: true,
+    isUserCreated: false,
+    createdAt: "2026-01-12T10:00:00.000Z",
+    updatedAt: "2026-01-12T10:00:00.000Z",
+  },
+  {
+    id: "pastel-de-chocolate",
+    title: "Pastel de Chocolate",
+    description:
+      "Un pastel intenso y tierno con una cobertura de chocolate sedosa.",
+    totalTimeMinutes: 60,
+    servings: 10,
+    category: "desserts",
+    ingredients: [
+      ingredient("pc-1", "Harina de trigo", "220 g"),
+      ingredient("pc-2", "Cacao puro", "45 g"),
+      ingredient("pc-3", "Huevos", "3"),
+      ingredient("pc-4", "Azúcar", "180 g"),
+      ingredient("pc-5", "Leche", "180 ml"),
+      ingredient("pc-6", "Aceite suave", "120 ml"),
+      ingredient("pc-7", "Levadura química", "1 sobre"),
+    ],
+    steps: [
+      step("pc-s1", "Calienta el horno a 175 °C y forra el molde."),
+      step("pc-s2", "Mezcla los ingredientes secos en un bol amplio."),
+      step(
+        "pc-s3",
+        "Bate los huevos con el azúcar hasta que la mezcla aclare.",
+      ),
+      step("pc-s4", "Incorpora la leche y el aceite, y después los secos."),
+      step("pc-s5", "Hornea 40 minutos y deja enfriar antes de desmoldar."),
+    ],
+    isFavorite: false,
+    isUserCreated: false,
+    createdAt: "2026-01-10T10:00:00.000Z",
+    updatedAt: "2026-01-10T10:00:00.000Z",
+  },
+  {
+    id: "pastel-fitness-platano-chocolate",
+    title: "Pastel Fitness de Plátano y Chocolate",
+    description: "Jugoso, fácil y con el dulzor natural del plátano maduro.",
+    totalTimeMinutes: 45,
+    servings: 8,
+    category: "healthy",
+    ingredients: [
+      ingredient("pf-1", "Plátanos maduros", "3"),
+      ingredient("pf-2", "Copos de avena", "180 g"),
+      ingredient("pf-3", "Huevos", "2"),
+      ingredient("pf-4", "Cacao puro", "25 g"),
+      ingredient("pf-5", "Pepitas de chocolate", "60 g"),
+    ],
+    steps: [
+      step("pf-s1", "Tritura los plátanos hasta obtener una crema."),
+      step("pf-s2", "Añade los huevos y mezcla hasta integrar."),
+      step("pf-s3", "Incorpora la avena, el cacao y la mitad de las pepitas."),
+      step(
+        "pf-s4",
+        "Vierte en el molde, termina con las pepitas y hornea 35 minutos.",
+      ),
+    ],
+    isFavorite: false,
+    isUserCreated: false,
+    createdAt: "2026-01-08T10:00:00.000Z",
+    updatedAt: "2026-01-08T10:00:00.000Z",
+  },
+  {
+    id: "pastel-queso-air-fryer",
+    title: "Pastel de Queso en Air Fryer",
+    description:
+      "Cremoso por dentro, dorado por fuera y listo en muy poco tiempo.",
+    totalTimeMinutes: 35,
+    servings: 6,
+    category: "airFryer",
+    ingredients: [
+      ingredient("pq-1", "Queso crema", "500 g"),
+      ingredient("pq-2", "Huevos", "3"),
+      ingredient("pq-3", "Azúcar", "120 g"),
+      ingredient("pq-4", "Nata líquida", "200 ml"),
+      ingredient("pq-5", "Maicena", "15 g"),
+    ],
+    steps: [
+      step("pq-s1", "Forra un molde que quepa en la cesta de la air fryer."),
+      step(
+        "pq-s2",
+        "Bate el queso crema con el azúcar hasta que no queden grumos.",
+      ),
+      step("pq-s3", "Agrega los huevos, la nata y la maicena."),
+      step("pq-s4", "Cocina a 160 °C durante 30 minutos y deja reposar."),
+    ],
+    isFavorite: false,
+    isUserCreated: false,
+    createdAt: "2026-01-05T10:00:00.000Z",
+    updatedAt: "2026-01-05T10:00:00.000Z",
+  },
+  {
+    id: "pastel-de-zanahoria",
+    title: "Pastel de Zanahoria",
+    description: "Especiado, húmedo y cubierto con una crema de queso suave.",
+    totalTimeMinutes: 55,
+    servings: 10,
+    category: "desserts",
+    ingredients: [
+      ingredient("pz-1", "Zanahoria rallada", "250 g"),
+      ingredient("pz-2", "Harina de trigo", "200 g"),
+      ingredient("pz-3", "Huevos", "3"),
+      ingredient("pz-4", "Azúcar moreno", "160 g"),
+      ingredient("pz-5", "Canela", "1 cucharadita"),
+      ingredient("pz-6", "Nueces", "80 g"),
+    ],
+    steps: [
+      step("pz-s1", "Precalienta el horno a 180 °C y prepara el molde."),
+      step("pz-s2", "Bate huevos, azúcar y aceite hasta emulsionar."),
+      step("pz-s3", "Añade la zanahoria, la harina y las especias."),
+      step("pz-s4", "Termina con las nueces y hornea 40 minutos."),
+      step("pz-s5", "Enfría por completo antes de cubrir con crema de queso."),
+    ],
+    isFavorite: false,
+    isUserCreated: false,
+    createdAt: "2026-01-02T10:00:00.000Z",
+    updatedAt: "2026-01-02T10:00:00.000Z",
+  },
+];

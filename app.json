@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Julis Cakes",
+    "slug": "julis-cakes",
+    "version": "1.0.0",
+    "scheme": "julis-cakes",
+    "platforms": ["ios", "android", "web"],
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    },
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "buildNumber": "1",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.juliscakes.app"
+    },
+    "android": {
+      "versionCode": 1,
+      "package": "com.juliscakes.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    }
+  }
+}
