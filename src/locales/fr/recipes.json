@@ -54,9 +54,11 @@
   },
   "detail": {
     "ingredients": "Ingrédients",
-    "ingredientCount": "{{count}} ingrédients",
+    "ingredientCount_one": "{{count}} ingrédient",
+    "ingredientCount_other": "{{count}} ingrédients",
     "preparation": "Préparation",
-    "stepCount": "{{count}} étapes",
+    "stepCount_one": "{{count}} étape",
+    "stepCount_other": "{{count}} étapes",
     "startCooking": "Commencer à cuisiner",
     "noDescription": "Une recette maison à savourer à tout moment.",
     "notFoundTitle": "Recette introuvable",
@@ -68,6 +70,8 @@
     "editTitle": "Modifier la recette",
     "photoTitle": "Une photo donne envie",
     "photoBody": "Ajoutez une image pour garder le souvenir de votre recette.",
+    "photoUploading": "Envoi…",
+    "photoUploadError": "Impossible d'envoyer la photo. Réessaie.",
     "information": "Informations",
     "name": "Nom",
     "namePlaceholder": "Ex. Gâteau au chocolat",
@@ -107,9 +111,20 @@
   },
   "ai": {
     "title": "Assistant IA",
-    "comingSoon": "Bientôt disponible",
-    "body": "L'assistant de cuisine arrivera dans une prochaine phase.",
-    "feature": "Idées, substitutions et aide pas à pas, bientôt disponibles."
+    "subtitle": "Votre aide culinaire, toujours à portée de main",
+    "statusReady": "Prêt",
+    "statusOnline": "En ligne",
+    "welcomeTitle": "Que voulez-vous cuisiner aujourd'hui ?",
+    "welcomeBody": "Demandez des substitutions, des conseils de texture ou de l'aide avec vos recettes enregistrées.",
+    "placeholder": "Écrivez votre question…",
+    "send": "Envoyer le message",
+    "sending": "Réflexion…",
+    "requestFailed": "Une réponse n'est pas disponible maintenant. Réessayez.",
+    "suggestions": {
+      "substitution": "Comment remplacer un ingrédient ?",
+      "time": "Comment ajuster le temps de cuisson ?",
+      "texture": "Comment obtenir une mie plus moelleuse ?"
+    }
   },
   "validation": {
     "nameRequired": "Ajoutez un nom à la recette.",

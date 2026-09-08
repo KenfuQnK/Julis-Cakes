@@ -13,6 +13,7 @@ type ButtonProps = {
 
 export const Button = forwardRef<View, ButtonProps>(
   ({ title, variant = "primary", className, ...touchableProps }, ref) => {
+    const disabledClassName = touchableProps.disabled ? "opacity-50" : "";
     const variantClassName = {
       primary: "bg-primary",
       secondary: "border border-border bg-surface",
@@ -27,7 +28,7 @@ export const Button = forwardRef<View, ButtonProps>(
         ref={ref}
         {...touchableProps}
         accessibilityRole="button"
-        className={`min-h-[52px] items-center justify-center rounded-2xl px-5 ${variantClassName} ${className ?? ""}`}
+        className={`min-h-[52px] items-center justify-center rounded-2xl px-5 ${variantClassName} ${disabledClassName} ${className ?? ""}`}
       >
         <Text className={`text-center text-base font-bold ${textClassName}`}>
           {title}

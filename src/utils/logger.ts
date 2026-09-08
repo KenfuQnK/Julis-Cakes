@@ -28,6 +28,10 @@ const LEVEL_WEIGHT: Record<LogLevel, number> = {
   error: 40,
 };
 
+// Declared locally rather than relied upon ambiently: this module is shared with
+// the Express server, whose program does not include React Native's globals.
+declare const __DEV__: boolean | undefined;
+
 const isDevEnvironment = (): boolean => {
   if (typeof __DEV__ !== "undefined") return __DEV__;
   return process.env.NODE_ENV !== "production";

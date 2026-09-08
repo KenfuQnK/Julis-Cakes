@@ -54,9 +54,11 @@
   },
   "detail": {
     "ingredients": "Zutaten",
-    "ingredientCount": "{{count}} Zutaten",
+    "ingredientCount_one": "{{count}} Zutat",
+    "ingredientCount_other": "{{count}} Zutaten",
     "preparation": "Zubereitung",
-    "stepCount": "{{count}} Schritte",
+    "stepCount_one": "{{count}} Schritt",
+    "stepCount_other": "{{count}} Schritte",
     "startCooking": "Kochen starten",
     "noDescription": "Ein hausgemachtes Rezept für jeden Moment.",
     "notFoundTitle": "Rezept nicht gefunden",
@@ -68,6 +70,8 @@
     "editTitle": "Rezept bearbeiten",
     "photoTitle": "Ein Foto macht Appetit",
     "photoBody": "Füge ein Bild hinzu, um dein Rezept in Erinnerung zu behalten.",
+    "photoUploading": "Wird hochgeladen…",
+    "photoUploadError": "Das Foto konnte nicht hochgeladen werden. Bitte versuche es erneut.",
     "information": "Informationen",
     "name": "Name",
     "namePlaceholder": "Z. B. Schokoladenkuchen",
@@ -107,9 +111,20 @@
   },
   "ai": {
     "title": "KI-Assistent",
-    "comingSoon": "Demnächst",
-    "body": "Der Kochassistent kommt in einer zukünftigen Phase.",
-    "feature": "Ideen, Ersetzungen und Schritt-für-Schritt-Hilfe folgen bald."
+    "subtitle": "Deine Küchenhilfe, immer griffbereit",
+    "statusReady": "Bereit",
+    "statusOnline": "Online",
+    "welcomeTitle": "Was möchtest du heute kochen?",
+    "welcomeBody": "Frage nach Ersatzmöglichkeiten, Tipps zur Konsistenz oder Hilfe zu deinen gespeicherten Rezepten.",
+    "placeholder": "Schreibe deine Frage…",
+    "send": "Nachricht senden",
+    "sending": "Denkt nach…",
+    "requestFailed": "Eine Antwort ist gerade nicht verfügbar. Bitte versuche es erneut.",
+    "suggestions": {
+      "substitution": "Wie ersetze ich eine Zutat?",
+      "time": "Wie passe ich die Backzeit an?",
+      "texture": "Wie bekomme ich eine luftigere Krume?"
+    }
   },
   "validation": {
     "nameRequired": "Gib dem Rezept einen Namen.",

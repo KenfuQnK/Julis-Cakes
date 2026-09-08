@@ -25,45 +25,46 @@ export function RecipeCard({
     : "";
 
   return (
-    <Pressable
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityLabel={t("recipes:accessibility.openRecipe", {
-        title: recipe.title,
-      })}
-      className={`${horizontal ? "w-[238px]" : "mb-4 w-full"} overflow-hidden rounded-[20px] bg-surface active:opacity-90`}
-    >
-      <View className="relative h-[154px]">
-        <RecipeImage
-          imageUri={recipe.imageUri}
-          localImage={recipe.localImage}
-          category={recipe.category}
-          className="h-full w-full"
-        />
-        <View className="absolute right-3 top-3">
-          <FavoriteButton
-            title={recipe.title}
-            isFavorite={recipe.isFavorite}
-            onPress={() => toggleFavorite(recipe.id)}
+    <View className={`${horizontal ? "w-[238px]" : "mb-4 w-full"} relative`}>
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={t("recipes:accessibility.openRecipe", {
+          title: recipe.title,
+        })}
+        className="overflow-hidden rounded-[20px] bg-surface active:opacity-90"
+      >
+        <View className="h-[154px]">
+          <RecipeImage
+            imageUri={recipe.imageUri}
+            category={recipe.category}
+            className="h-full w-full"
           />
         </View>
-      </View>
-      <View className="p-4">
-        <Text
-          numberOfLines={2}
-          className="mb-2 text-[17px] font-bold leading-5 text-foreground"
-        >
-          {recipe.title}
-        </Text>
-        <View className="flex-row items-center justify-between">
-          <RecipeMetadata totalTimeMinutes={recipe.totalTimeMinutes} />
-          {categoryLabel ? (
-            <Text className="text-xs font-semibold text-muted">
-              {categoryLabel}
-            </Text>
-          ) : null}
+        <View className="p-4">
+          <Text
+            numberOfLines={2}
+            className="mb-2 text-[17px] font-bold leading-5 text-foreground"
+          >
+            {recipe.title}
+          </Text>
+          <View className="flex-row items-center justify-between">
+            <RecipeMetadata totalTimeMinutes={recipe.totalTimeMinutes} />
+            {categoryLabel ? (
+              <Text className="text-xs font-semibold text-muted">
+                {categoryLabel}
+              </Text>
+            ) : null}
+          </View>
         </View>
+      </Pressable>
+      <View className="absolute right-3 top-3">
+        <FavoriteButton
+          title={recipe.title}
+          isFavorite={recipe.isFavorite}
+          onPress={() => toggleFavorite(recipe.id)}
+        />
       </View>
-    </Pressable>
+    </View>
   );
 }

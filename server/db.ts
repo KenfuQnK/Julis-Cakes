@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { Pool, type PoolClient } from "pg";
 
@@ -53,11 +53,15 @@ export async function withTransaction<T>(
 }
 
 export async function runMigrations(): Promise<void> {
-  const migrationPath = path.join(
-    process.cwd(),
-    "server/migrations/001_recipes.sql",
+  const migrationsDir = path.join(process.cwd(), "server/migrations");
+  const files = (await readdir(migrationsDir)).filter((file) =>
+    file.endsWith(".sql"),
   );
-  const migration = await readFile(migrationPath, "utf8");
-  await getPool().query(migration);
-  log.info("Recipe schema ready");
+  // Filenames are zero-padded (001_, 002_, ...) so lexical order is run order.
+  for (const file of files.sort()) {
+    const migration = await readFile(path.join(migrationsDir, file), "utf8");
+    await getPool().query(migration);
+    log.debug("Migration applied", { file });
+  }
+  log.info("Recipe schema ready", { migrations: files.length });
 }

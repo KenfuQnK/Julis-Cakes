@@ -16,6 +16,7 @@ import { CategoryChip } from "@/src/components/CategoryChip";
 import { RecipeImage } from "@/src/components/RecipeImage";
 import { RecipeImagePlaceholder } from "@/src/components/RecipeImagePlaceholder";
 import { Colors } from "@/src/constants/Colors";
+import { uploadRecipeImage } from "@/src/services/imageUpload.service";
 import type { Recipe, RecipeCategory, RecipeDraft } from "@/src/types/recipe";
 import {
   hasRecipeValidationErrors,
@@ -151,6 +152,13 @@ export function RecipeEditor({
     ingredientIds: {},
     stepIds: {},
   });
+  // Shown straight after picking, while the file is still on its way to the
+  // bucket; `draft.imageUri` only ever holds the final remote URL.
+  const [previewUri, setPreviewUri] = useState<string | undefined>(
+    initialRecipe?.imageUri,
+  );
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [imageUploadFailed, setImageUploadFailed] = useState(false);
 
   const chooseImage = async () => {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -160,10 +168,31 @@ export function RecipeEditor({
       mediaTypes: ["images"],
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.85,
+      // Compression happens once, on the way out, in uploadRecipeImage.
+      quality: 1,
     });
-    if (!result.canceled && result.assets[0]?.uri)
-      dispatch({ type: "setImage", imageUri: result.assets[0].uri });
+    const asset = result.canceled ? undefined : result.assets[0];
+    if (!asset?.uri) return;
+
+    setPreviewUri(asset.uri);
+    setImageUploadFailed(false);
+    setIsUploadingImage(true);
+    try {
+      const publicUrl = await uploadRecipeImage({
+        uri: asset.uri,
+        width: asset.width,
+      });
+      dispatch({ type: "setImage", imageUri: publicUrl });
+      setPreviewUri(publicUrl);
+    } catch {
+      // A local file:// URI would be meaningless on any other device, so a
+      // failed upload leaves the recipe without a photo rather than a dead link.
+      dispatch({ type: "setImage", imageUri: undefined });
+      setPreviewUri(undefined);
+      setImageUploadFailed(true);
+    } finally {
+      setIsUploadingImage(false);
+    }
   };
 
   const handleSave = () => {
@@ -200,15 +229,14 @@ export function RecipeEditor({
             accessibilityLabel={t("recipes:accessibility.addPhoto")}
             className="mb-7 overflow-hidden rounded-[24px]"
           >
-            {draft.imageUri ? (
+            {previewUri ? (
               <View className="h-56">
-                <RecipeImage
-                  imageUri={draft.imageUri}
-                  className="h-full w-full"
-                />
+                <RecipeImage imageUri={previewUri} className="h-full w-full" />
                 <View className="absolute bottom-4 left-4 rounded-full bg-white/90 px-4 py-2">
                   <Text className="text-sm font-bold text-foreground">
-                    {t("recipes:common.addPhoto")}
+                    {isUploadingImage
+                      ? t("recipes:editor.photoUploading")
+                      : t("recipes:common.addPhoto")}
                   </Text>
                 </View>
               </View>
@@ -232,6 +260,9 @@ export function RecipeEditor({
               </View>
             )}
           </Pressable>
+          {imageUploadFailed ? (
+            <ErrorText message={t("recipes:editor.photoUploadError")} />
+          ) : null}
 
           <EditorSectionTitle title={t("recipes:editor.information")} />
           <FieldLabel label={t("recipes:editor.name")} />
@@ -468,7 +499,11 @@ export function RecipeEditor({
             className="mb-8"
           />
 
-          <Button title={t("recipes:common.save")} onPress={handleSave} />
+          <Button
+            title={t("recipes:common.save")}
+            onPress={handleSave}
+            disabled={isUploadingImage}
+          />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

@@ -54,9 +54,11 @@
   },
   "detail": {
     "ingredients": "Ingredients",
-    "ingredientCount": "{{count}} ingredients",
+    "ingredientCount_one": "{{count}} ingredient",
+    "ingredientCount_other": "{{count}} ingredients",
     "preparation": "Preparation",
-    "stepCount": "{{count}} steps",
+    "stepCount_one": "{{count}} step",
+    "stepCount_other": "{{count}} steps",
     "startCooking": "Start cooking",
     "noDescription": "A homemade recipe to enjoy any time.",
     "notFoundTitle": "Recipe not found",
@@ -68,6 +70,8 @@
     "editTitle": "Edit recipe",
     "photoTitle": "A photo makes it irresistible",
     "photoBody": "Add an image to keep a memory of your recipe.",
+    "photoUploading": "Uploading…",
+    "photoUploadError": "We couldn't upload the photo. Please try again.",
     "information": "Information",
     "name": "Name",
     "namePlaceholder": "E.g. Chocolate cake",
@@ -107,9 +111,20 @@
   },
   "ai": {
     "title": "AI assistant",
-    "comingSoon": "Coming soon",
-    "body": "Your cooking assistant will arrive in a future phase.",
-    "feature": "Ideas, substitutions and step-by-step help, coming soon."
+    "subtitle": "Your cooking help, always close by",
+    "statusReady": "Ready",
+    "statusOnline": "Online",
+    "welcomeTitle": "What would you like to cook today?",
+    "welcomeBody": "Ask for substitutions, texture tips, or help with your saved recipes.",
+    "placeholder": "Write your question…",
+    "send": "Send message",
+    "sending": "Thinking…",
+    "requestFailed": "A reply is not available right now. Please try again.",
+    "suggestions": {
+      "substitution": "How can I substitute an ingredient?",
+      "time": "How can I adjust the baking time?",
+      "texture": "How can I get a fluffier crumb?"
+    }
   },
   "validation": {
     "nameRequired": "Add a name for the recipe.",

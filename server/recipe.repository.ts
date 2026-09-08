@@ -225,14 +225,18 @@ export async function getRecipes(scopeKey: string): Promise<RecipeRecord[]> {
     `SELECT r.*, EXISTS(
       SELECT 1 FROM recipe_favorites f WHERE f.recipe_id = r.id AND f.scope_key = $1
     ) AS is_favorite
-    FROM recipes r ORDER BY r.created_at DESC, r.id`,
+    FROM recipes r
+    WHERE r.is_user_created = FALSE OR r.created_by_scope = $1
+    ORDER BY r.created_at DESC, r.id`,
     [scopeKey],
   );
   const ingredients = await pool.query<IngredientRow>(
-    "SELECT * FROM recipe_ingredients ORDER BY sort_order",
+    "SELECT * FROM recipe_ingredients WHERE recipe_id = ANY($1) ORDER BY sort_order",
+    [recipes.rows.map((recipe) => recipe.id)],
   );
   const steps = await pool.query<StepRow>(
-    "SELECT * FROM recipe_steps ORDER BY step_number",
+    "SELECT * FROM recipe_steps WHERE recipe_id = ANY($1) ORDER BY step_number",
+    [recipes.rows.map((recipe) => recipe.id)],
   );
   return recipes.rows.map((row) =>
     toRecipeRecord(row, ingredients.rows, steps.rows),
@@ -325,7 +329,23 @@ export async function setFavorite(
 
 export async function seedRecipes(recipes: RecipeInput[]): Promise<void> {
   await withTransaction(async (client) => {
-    for (const recipe of recipes)
+    for (const recipe of recipes) {
+      await client.query(
+        `UPDATE recipes SET title = $1, description = $2, image_uri = $3,
+         total_time_minutes = $4, servings = $5, category = $6, updated_at = NOW()
+         WHERE id = $7 AND is_user_created = FALSE`,
+        [
+          recipe.title,
+          recipe.description,
+          recipe.imageUri ?? null,
+          recipe.totalTimeMinutes ?? null,
+          recipe.servings ?? null,
+          recipe.category ?? null,
+          recipe.id,
+        ],
+      );
+      await replaceRecipeChildren(client, recipe);
       await insertRecipeGraph(client, recipe, "seed");
+    }
   });
 }

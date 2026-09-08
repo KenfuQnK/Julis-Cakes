@@ -55,7 +55,6 @@ export default function RecipeDetailScreen() {
         <View className="relative h-[340px]">
           <RecipeImage
             imageUri={recipe.imageUri}
-            localImage={recipe.localImage}
             category={recipe.category}
             className="h-full w-full"
             placeholderIconSize={46}
@@ -157,6 +156,7 @@ export default function RecipeDetailScreen() {
                   number={index + 1}
                   title={step.title}
                   description={step.description}
+                  imageUri={step.imageUri}
                 />
               ))}
             </View>

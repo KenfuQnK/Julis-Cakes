@@ -4,8 +4,10 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "../dist-server",
+    "rootDir": "..",
     "noEmit": false,
     "types": ["node"]
   },
-  "include": ["./**/*.ts", "../src/types/**/*.ts", "../src/utils/logger.ts"]
+  "include": ["./**/*.ts", "../src/types/**/*.ts", "../src/utils/logger.ts"],
+  "exclude": ["./**/*.test.ts"]
 }

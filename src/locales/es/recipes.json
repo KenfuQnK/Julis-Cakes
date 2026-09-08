@@ -54,9 +54,11 @@
   },
   "detail": {
     "ingredients": "Ingredientes",
-    "ingredientCount": "{{count}} ingredientes",
+    "ingredientCount_one": "{{count}} ingrediente",
+    "ingredientCount_other": "{{count}} ingredientes",
     "preparation": "Preparación",
-    "stepCount": "{{count}} pasos",
+    "stepCount_one": "{{count}} paso",
+    "stepCount_other": "{{count}} pasos",
     "startCooking": "Empezar a cocinar",
     "noDescription": "Una receta casera para disfrutar en cualquier momento.",
     "notFoundTitle": "Receta no encontrada",
@@ -68,6 +70,8 @@
     "editTitle": "Editar receta",
     "photoTitle": "La foto abre el apetito",
     "photoBody": "Añade una imagen para guardar el recuerdo de tu receta.",
+    "photoUploading": "Subiendo…",
+    "photoUploadError": "No se ha podido subir la foto. Inténtalo de nuevo.",
     "information": "Información",
     "name": "Nombre",
     "namePlaceholder": "Ej. Tarta de chocolate",
@@ -107,9 +111,20 @@
   },
   "ai": {
     "title": "Asistente IA",
-    "comingSoon": "Próximamente",
-    "body": "El asistente de cocina llegará en una próxima fase.",
-    "feature": "Ideas, sustituciones y ayuda paso a paso, muy pronto."
+    "subtitle": "Tu ayuda de cocina, siempre a mano",
+    "statusReady": "Listo",
+    "statusOnline": "En línea",
+    "welcomeTitle": "¿Qué quieres cocinar hoy?",
+    "welcomeBody": "Pide sustituciones, consejos de textura o ayuda con tus recetas guardadas.",
+    "placeholder": "Escribe tu pregunta…",
+    "send": "Enviar mensaje",
+    "sending": "Pensando…",
+    "requestFailed": "No se ha podido responder ahora. Inténtalo de nuevo.",
+    "suggestions": {
+      "substitution": "¿Cómo sustituyo un ingrediente?",
+      "time": "¿Cómo ajusto el tiempo de horneado?",
+      "texture": "¿Cómo consigo una miga más esponjosa?"
+    }
   },
   "validation": {
     "nameRequired": "Escribe un nombre para la receta.",

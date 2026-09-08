@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
 import { Platform } from "react-native";
 
 import type { Recipe } from "@/src/types/recipe";
@@ -20,16 +21,38 @@ async function getScopeKey(): Promise<string> {
   return cachedScopeKey;
 }
 
-function getApiBaseUrl(): string {
+/**
+ * On a physical device "localhost" is the phone itself, so the LAN address of
+ * the machine running the API is the only thing that works. Expo already knows
+ * it — the dev server it connected to lives on that same machine — so its host
+ * is reused instead of asking every developer to hardcode an IP.
+ */
+function getDevServerHost(): string | undefined {
+  const hostUri =
+    Constants.expoConfig?.hostUri ??
+    (Constants.expoGoConfig as { debuggerHost?: string } | undefined)
+      ?.debuggerHost;
+  const host = hostUri?.split("/")[0]?.split(":")[0];
+  return host && host !== "localhost" && host !== "127.0.0.1"
+    ? host
+    : undefined;
+}
+
+export function getApiBaseUrl(): string {
   const configuredUrl = process.env.EXPO_PUBLIC_API_URL;
   if (configuredUrl) return configuredUrl.replace(/\/$/, "");
 
   const port = process.env.EXPO_PUBLIC_API_PORT ?? "8791";
-  const host = Platform.OS === "android" ? "10.0.2.2" : "localhost";
+  const host =
+    getDevServerHost() ??
+    (Platform.OS === "android" ? "10.0.2.2" : "localhost");
   return `http://${host}:${port}`;
 }
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+export async function requestApi<T>(
+  path: string,
+  init?: RequestInit,
+): Promise<T> {
   const scopeKey = await getScopeKey();
   const url = `${getApiBaseUrl()}${path}`;
   try {
@@ -58,25 +81,25 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export async function fetchRecipes(): Promise<Recipe[]> {
-  return request<Recipe[]>("/api/recipes");
+  return requestApi<Recipe[]>("/api/recipes");
 }
 
 export async function createRecipe(recipe: Recipe): Promise<void> {
-  await request("/api/recipes", {
+  await requestApi("/api/recipes", {
     method: "POST",
     body: JSON.stringify(recipe),
   });
 }
 
 export async function updateRecipe(recipe: Recipe): Promise<void> {
-  await request(`/api/recipes/${encodeURIComponent(recipe.id)}`, {
+  await requestApi(`/api/recipes/${encodeURIComponent(recipe.id)}`, {
     method: "PATCH",
     body: JSON.stringify(recipe),
   });
 }
 
 export async function deleteRecipe(recipeId: string): Promise<void> {
-  await request(`/api/recipes/${encodeURIComponent(recipeId)}`, {
+  await requestApi(`/api/recipes/${encodeURIComponent(recipeId)}`, {
     method: "DELETE",
   });
 }
@@ -85,7 +108,7 @@ export async function setFavorite(
   recipeId: string,
   isFavorite: boolean,
 ): Promise<void> {
-  await request(`/api/recipes/${encodeURIComponent(recipeId)}/favorite`, {
+  await requestApi(`/api/recipes/${encodeURIComponent(recipeId)}/favorite`, {
     method: "PUT",
     body: JSON.stringify({ isFavorite }),
   });

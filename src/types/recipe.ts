@@ -1,5 +1,3 @@
-import type { ImageSourcePropType } from "react-native";
-
 export type RecipeCategory = "desserts" | "healthy" | "quick" | "airFryer";
 
 export interface Ingredient {
@@ -7,7 +5,6 @@ export interface Ingredient {
   name: string;
   amount: string;
   imageUri?: string;
-  localImage?: ImageSourcePropType;
 }
 
 export interface RecipeStep {
@@ -15,7 +12,6 @@ export interface RecipeStep {
   title?: string;
   description: string;
   imageUri?: string;
-  localImage?: ImageSourcePropType;
 }
 
 export interface Recipe {
@@ -23,7 +19,6 @@ export interface Recipe {
   title: string;
   description: string;
   imageUri?: string;
-  localImage?: ImageSourcePropType;
   totalTimeMinutes?: number;
   servings?: number;
   category?: RecipeCategory;

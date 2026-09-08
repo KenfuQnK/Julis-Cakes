@@ -35,7 +35,7 @@ export default function EditRecipeScreen() {
         steps: draft.steps,
         updatedAt: new Date().toISOString(),
       });
-      router.push({ pathname: "/recipe/[id]", params: { id: recipe.id } });
+      router.replace({ pathname: "/recipe/[id]", params: { id: recipe.id } });
     } catch {
       Alert.alert(
         t("recipes:editor.saveErrorTitle"),

@@ -34,7 +34,7 @@ export default function CreateRecipeScreen() {
     };
     try {
       await createRecipe(recipe);
-      router.push({ pathname: "/recipe/[id]", params: { id: recipe.id } });
+      router.replace({ pathname: "/recipe/[id]", params: { id: recipe.id } });
     } catch {
       Alert.alert(
         t("recipes:editor.saveErrorTitle"),

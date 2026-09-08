@@ -1,14 +1,17 @@
 import type { Recipe } from "@/src/types/recipe";
+import { seedImages } from "./seed-images";
 
 const ingredient = (id: string, name: string, amount: string) => ({
   id,
   name,
   amount,
+  imageUri: seedImages.ingredient,
 });
 const step = (id: string, description: string, title?: string) => ({
   id,
   description,
   title,
+  imageUri: seedImages.step,
 });
 
 export const seedRecipes: Recipe[] = [
@@ -17,6 +20,7 @@ export const seedRecipes: Recipe[] = [
     title: "Brazo de Gitano",
     description:
       "Un clásico esponjoso relleno de crema de avellanas, perfecto para compartir.",
+    imageUri: seedImages.recipe,
     totalTimeMinutes: 50,
     servings: 8,
     category: "desserts",
@@ -64,6 +68,7 @@ export const seedRecipes: Recipe[] = [
     title: "Pastel de Chocolate",
     description:
       "Un pastel intenso y tierno con una cobertura de chocolate sedosa.",
+    imageUri: seedImages.recipe,
     totalTimeMinutes: 60,
     servings: 10,
     category: "desserts",
@@ -95,6 +100,7 @@ export const seedRecipes: Recipe[] = [
     id: "pastel-fitness-platano-chocolate",
     title: "Pastel Fitness de Plátano y Chocolate",
     description: "Jugoso, fácil y con el dulzor natural del plátano maduro.",
+    imageUri: seedImages.recipe,
     totalTimeMinutes: 45,
     servings: 8,
     category: "healthy",
@@ -124,6 +130,7 @@ export const seedRecipes: Recipe[] = [
     title: "Pastel de Queso en Air Fryer",
     description:
       "Cremoso por dentro, dorado por fuera y listo en muy poco tiempo.",
+    imageUri: seedImages.recipe,
     totalTimeMinutes: 35,
     servings: 6,
     category: "airFryer",
@@ -152,6 +159,7 @@ export const seedRecipes: Recipe[] = [
     id: "pastel-de-zanahoria",
     title: "Pastel de Zanahoria",
     description: "Especiado, húmedo y cubierto con una crema de queso suave.",
+    imageUri: seedImages.recipe,
     totalTimeMinutes: 55,
     servings: 10,
     category: "desserts",

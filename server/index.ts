@@ -19,6 +19,12 @@ import {
 import { seedRecipes } from "./recipe.repository";
 import { seedRecipes as seedRecipeData } from "./seed-recipes";
 import { createLogger } from "../src/utils/logger";
+import { askCookingAssistant, type ChatMessage } from "./ai.service";
+import {
+  createUploadTicket,
+  isStorageConfigured,
+  UPLOAD_CONTENT_TYPES,
+} from "./storage";
 
 const log = createLogger("RecipesAPI");
 const app = express();
@@ -37,9 +43,38 @@ function getRecipeInput(body: unknown): RecipeInput {
   const payload = body as Partial<RecipeInput>;
   if (
     !payload.id ||
-    !payload.title ||
+    typeof payload.title !== "string" ||
+    !payload.title.trim() ||
     !Array.isArray(payload.ingredients) ||
-    !Array.isArray(payload.steps)
+    !payload.ingredients.length ||
+    !payload.ingredients.every(
+      (ingredient) =>
+        ingredient &&
+        typeof ingredient === "object" &&
+        typeof (ingredient as RecipeInput["ingredients"][number]).id ===
+          "string" &&
+        typeof (ingredient as RecipeInput["ingredients"][number]).name ===
+          "string" &&
+        Boolean(
+          (ingredient as RecipeInput["ingredients"][number]).name.trim(),
+        ) &&
+        typeof (ingredient as RecipeInput["ingredients"][number]).amount ===
+          "string" &&
+        Boolean(
+          (ingredient as RecipeInput["ingredients"][number]).amount.trim(),
+        ),
+    ) ||
+    !Array.isArray(payload.steps) ||
+    !payload.steps.length ||
+    !payload.steps.every(
+      (step) =>
+        step &&
+        typeof step === "object" &&
+        typeof (step as RecipeInput["steps"][number]).id === "string" &&
+        typeof (step as RecipeInput["steps"][number]).description ===
+          "string" &&
+        Boolean((step as RecipeInput["steps"][number]).description.trim()),
+    )
   ) {
     throw new Error("Recipe requires id, title, ingredients and steps");
   }
@@ -57,6 +92,48 @@ function getRecipeInput(body: unknown): RecipeInput {
     steps: payload.steps,
     isUserCreated: Boolean(payload.isUserCreated),
   };
+}
+
+function getAssistantInput(body: unknown): {
+  message: string;
+  history: ChatMessage[];
+} {
+  if (!body || typeof body !== "object")
+    throw new Error("Invalid assistant payload");
+  const payload = body as { message?: unknown; history?: unknown };
+  const message =
+    typeof payload.message === "string" ? payload.message.trim() : "";
+  if (!message || message.length > 2_000)
+    throw new Error("Invalid assistant message");
+  const history = Array.isArray(payload.history)
+    ? payload.history
+        .filter(
+          (item): item is ChatMessage =>
+            Boolean(item) &&
+            typeof item === "object" &&
+            ((item as ChatMessage).role === "user" ||
+              (item as ChatMessage).role === "assistant") &&
+            typeof (item as ChatMessage).content === "string" &&
+            (item as ChatMessage).content.length <= 2_000,
+        )
+        .slice(-8)
+    : [];
+  return { message, history };
+}
+
+function getUploadContentType(body: unknown): string {
+  const contentType =
+    body && typeof body === "object"
+      ? (body as { contentType?: unknown }).contentType
+      : undefined;
+  if (
+    typeof contentType !== "string" ||
+    !UPLOAD_CONTENT_TYPES.includes(contentType)
+  )
+    throw new Error(
+      `Invalid upload content type, expected one of ${UPLOAD_CONTENT_TYPES.join(", ")}`,
+    );
+  return contentType;
 }
 
 app.get("/health", async (_request, response, next) => {
@@ -125,6 +202,40 @@ app.put("/api/recipes/:id/favorite", async (request, response, next) => {
   }
 });
 
+app.post("/api/uploads/sign", async (request, response, next) => {
+  try {
+    if (!isStorageConfigured()) {
+      log.warn("Upload requested but object storage is not configured");
+      response.status(503).json({ error: "Image uploads are not available" });
+      return;
+    }
+    const ticket = await createUploadTicket(
+      getScopeKey(request),
+      getUploadContentType(request.body),
+    );
+    response.json(ticket);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post("/api/assistant", async (request, response, next) => {
+  try {
+    const input = getAssistantInput(request.body);
+    const scopeKey = getScopeKey(request);
+    log.info("[AI_CHAT] Received complete message", { ...input, scopeKey });
+    const result = await askCookingAssistant(
+      input.message,
+      input.history,
+      await getRecipes(scopeKey),
+    );
+    log.info("[AI_CHAT] Sending complete message", { ...result });
+    response.json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.use(
   (
     error: unknown,
@@ -135,9 +246,12 @@ app.use(
     const message =
       error instanceof Error ? error.message : "Unexpected server error";
     log.error("Request failed", { message });
-    response
-      .status(message.includes("not found") ? 404 : 500)
-      .json({ error: "Request failed" });
+    const status = message.includes("not found")
+      ? 404
+      : message.startsWith("Invalid") || message.includes("requires")
+        ? 400
+        : 500;
+    response.status(status).json({ error: "Request failed" });
   },
 );
 
