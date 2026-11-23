@@ -1,150 +1,301 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, Pressable, ScrollView, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Image,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { CategoryChip } from "@/src/components/CategoryChip";
+import { CollectionRecipeCard } from "@/src/components/CollectionRecipeCard";
 import { EmptyState } from "@/src/components/EmptyState";
-import { RecipeCard } from "@/src/components/RecipeCard";
+import { SearchInput } from "@/src/components/SearchInput";
 import { Colors } from "@/src/constants/Colors";
 import { useRecipesStore } from "@/src/stores/recipes.store";
+import type { RecipeCategory } from "@/src/types/recipe";
+import { searchRecipes } from "@/src/utils/recipeSearch";
 
-type RecipeListMode = "created" | "favorites";
+const MODES = [
+  { id: "all", icon: "layers-outline", label: "recipes:categories.all" },
+  { id: "created", icon: "pencil-outline", label: "recipes:mine.created" },
+  { id: "favorites", icon: "heart-outline", label: "recipes:mine.favorites" },
+] as const;
+
+type RecipeListMode = (typeof MODES)[number]["id"];
 
 export default function MyRecipesScreen() {
   const { t } = useTranslation(["recipes"]);
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const recipes = useRecipesStore((state) => state.recipes);
+  const isLoading = useRecipesStore((state) => state.isLoading);
+  const initialized = useRecipesStore((state) => state.initialized);
+  const error = useRecipesStore((state) => state.error);
+  const initialize = useRecipesStore((state) => state.initialize);
   const deleteRecipe = useRecipesStore((state) => state.deleteRecipe);
   const [mode, setMode] = useState<RecipeListMode>("created");
-  const filteredRecipes = recipes.filter((recipe) =>
-    mode === "created" ? recipe.isUserCreated : recipe.isFavorite,
-  );
+  const [query, setQuery] = useState("");
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [category, setCategory] = useState<RecipeCategory>();
 
-  const confirmDelete = (id: string, title: string) => {
-    Alert.alert(
-      t("recipes:editor.deleteTitle"),
-      t("recipes:editor.deleteBody"),
-      [
-        { text: t("recipes:editor.deleteCancel"), style: "cancel" },
-        {
-          text: t("recipes:editor.deleteConfirm"),
-          style: "destructive",
-          onPress: () => deleteRecipe(id),
-        },
-      ],
-    );
+  const collection = recipes.filter(
+    (recipe) => recipe.isUserCreated || recipe.isFavorite,
+  );
+  const categories = Array.from(
+    new Set(
+      collection.flatMap((recipe) =>
+        recipe.category ? [recipe.category] : [],
+      ),
+    ),
+  );
+  const filteredRecipes = searchRecipes(
+    collection.filter((recipe) => {
+      if (category && category !== recipe.category) return false;
+      if (mode === "created") return recipe.isUserCreated;
+      if (mode === "favorites") return recipe.isFavorite;
+      return true;
+    }),
+    query,
+  );
+  const hasSearchFilters = Boolean(query.trim() || category);
+  const emptyKey = (
+    { all: "All", favorites: "Favorites", created: "Created" } as const
+  )[mode];
+
+  const confirmDelete = (id: string) => {
+    const title = t("recipes:editor.deleteTitle");
+    const body = t("recipes:editor.deleteBody");
+    const remove = () => void deleteRecipe(id);
+
+    if (Platform.OS === "web") {
+      if (globalThis.confirm(`${title}\n\n${body}`)) remove();
+      return;
+    }
+
+    Alert.alert(title, body, [
+      { text: t("recipes:editor.deleteCancel"), style: "cancel" },
+      {
+        text: t("recipes:editor.deleteConfirm"),
+        style: "destructive",
+        onPress: remove,
+      },
+    ]);
   };
 
   return (
     <View className="flex-1 bg-background">
-      <ScrollView
+      <FlatList
+        style={{ width: "100%", maxWidth: 590, alignSelf: "center" }}
+        contentContainerStyle={{
+          paddingTop: insets.top + 20,
+          paddingBottom: 22,
+          paddingHorizontal: 16,
+        }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 40 }}
-      >
-        <View style={{ paddingTop: insets.top + 18 }} className="px-5">
-          <View className="mb-6 flex-row items-center justify-between">
-            <View>
-              <Text className="text-[30px] font-extrabold text-foreground">
-                {t("recipes:mine.title")}
-              </Text>
-              <Text className="mt-1 text-[15px] text-muted">
-                {t("recipes:home.subtitle")}
-              </Text>
-            </View>
-            <View className="h-11 w-11 items-center justify-center rounded-full bg-primary-soft">
-              <FontAwesome name="book" size={19} color={Colors.primary} />
-            </View>
-          </View>
-          <View className="mb-7 flex-row gap-2">
-            <CategoryChip
-              label={t("recipes:mine.created")}
-              selected={mode === "created"}
-              onPress={() => setMode("created")}
+        keyboardShouldPersistTaps="handled"
+        data={filteredRecipes}
+        keyExtractor={(recipe) => recipe.id}
+        ItemSeparatorComponent={RecipeListSeparator}
+        renderItem={({ item, index }) => (
+          <CollectionRecipeCard
+            recipe={item}
+            featured={index === 0 && !hasSearchFilters}
+            onOpen={() =>
+              router.push({ pathname: "/recipe/[id]", params: { id: item.id } })
+            }
+            onEdit={() =>
+              router.push({
+                pathname: "/recipe/edit/[id]",
+                params: { id: item.id },
+              })
+            }
+            onDelete={() => confirmDelete(item.id)}
+          />
+        )}
+        ListHeaderComponent={
+          <View className="mb-4">
+            <View
+              pointerEvents="none"
+              className="absolute -right-5 -top-24 h-36 w-72 -rotate-12 rounded-[45%] bg-primary-soft"
             />
-            <CategoryChip
-              label={t("recipes:mine.favorites")}
-              selected={mode === "favorites"}
-              onPress={() => setMode("favorites")}
-            />
-          </View>
-
-          {filteredRecipes.length ? (
-            filteredRecipes.map((recipe) => (
-              <View key={recipe.id} className="mb-1">
-                <RecipeCard
-                  recipe={recipe}
-                  onPress={() =>
-                    router.push({
-                      pathname: "/recipe/[id]",
-                      params: { id: recipe.id },
-                    })
-                  }
-                />
-                {mode === "created" ? (
-                  <View className="-mt-3 mb-4 flex-row justify-end gap-4 pr-3">
-                    <Pressable
-                      onPress={() =>
-                        router.push({
-                          pathname: "/recipe/edit/[id]",
-                          params: { id: recipe.id },
-                        })
-                      }
-                      accessibilityRole="button"
-                      accessibilityLabel={t("recipes:mine.editLabel", {
-                        title: recipe.title,
-                      })}
-                      className="min-h-[44px] flex-row items-center gap-2 px-2"
-                    >
-                      <FontAwesome
-                        name="pencil"
-                        size={14}
-                        color={Colors.muted}
-                      />
-                      <Text className="text-sm font-bold text-muted">
-                        {t("recipes:common.edit")}
-                      </Text>
-                    </Pressable>
-                    <Pressable
-                      onPress={() => confirmDelete(recipe.id, recipe.title)}
-                      accessibilityRole="button"
-                      accessibilityLabel={t("recipes:mine.deleteLabel", {
-                        title: recipe.title,
-                      })}
-                      className="min-h-[44px] flex-row items-center gap-2 px-2"
-                    >
-                      <FontAwesome
-                        name="trash-o"
-                        size={14}
-                        color={Colors.error}
-                      />
-                      <Text className="text-sm font-bold text-error">
-                        {t("recipes:common.remove")}
-                      </Text>
-                    </Pressable>
+            <View
+              pointerEvents="none"
+              aria-hidden
+              className="absolute right-[80px]  -top-[100px] h-[200px] w-[164px]"
+            >
+              <Image
+                source={require("@/assets/images/recipe-collection-header.png")}
+                resizeMode="contain"
+                style={{ width: 300, height: 300 }}
+              />
+            </View>
+            <View className="mb-3 mt-4 flex-row items-start justify-between gap-2">
+              <View className="min-w-0 flex-1">
+                <Text
+                  accessibilityRole="header"
+                  className="text-[38px] font-black leading-[44px] tracking-[-1.4px] text-foreground"
+                >
+                  {t("recipes:mine.title")}
+                </Text>
+                <View className="mt-0.5 flex-row items-center gap-2">
+                  <Text className="shrink text-base font-medium leading-6 text-muted">
+                    {t("recipes:home.subtitle")}
+                  </Text>
+                  <View
+                    importantForAccessibility="no-hide-descendants"
+                    accessibilityElementsHidden
+                    className="rotate-12"
+                  >
+                    <Ionicons
+                      name="heart-outline"
+                      size={21}
+                      color={Colors.primary}
+                    />
                   </View>
-                ) : null}
+                </View>
               </View>
-            ))
+              {/* <View
+                importantForAccessibility="no-hide-descendants"
+                accessibilityElementsHidden
+                className="h-12 w-12 items-center justify-center rounded-[18px] bg-primary-soft shadow-recipe"
+              >
+                <MaterialCommunityIcons
+                  name="notebook-outline"
+                  size={29}
+                  color={Colors.primaryDark}
+                />
+              </View> */}
+            </View>
+
+            <SearchInput
+              rounded
+              value={query}
+              onChangeText={setQuery}
+              onClear={() => setQuery("")}
+              placeholder={t("recipes:mine.searchPlaceholder")}
+              clearLabel={t("recipes:search.clear")}
+              trailingAction={
+                <Pressable
+                  onPress={() => setFiltersOpen(!filtersOpen)}
+                  accessibilityRole="button"
+                  accessibilityLabel={t("recipes:mine.filters")}
+                  accessibilityState={{
+                    expanded: filtersOpen,
+                    selected: Boolean(category),
+                  }}
+                  className={`h-11 w-11 items-center justify-center rounded-full ${filtersOpen || category ? "bg-primary-soft" : ""}`}
+                >
+                  <MaterialCommunityIcons
+                    name="tune-variant"
+                    size={23}
+                    color={category ? Colors.primaryDark : Colors.muted}
+                  />
+                </Pressable>
+              }
+            />
+
+            {filtersOpen ? (
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                className="mt-3"
+              >
+                <View className="flex-row gap-2">
+                  <CategoryChip
+                    label={t("recipes:mine.allCategories")}
+                    selected={!category}
+                    onPress={() => setCategory(undefined)}
+                  />
+                  {categories.map((item) => (
+                    <CategoryChip
+                      key={item}
+                      label={t(`recipes:categories.${item}`)}
+                      selected={category === item}
+                      onPress={() => setCategory(item)}
+                    />
+                  ))}
+                </View>
+              </ScrollView>
+            ) : null}
+
+            <View className="mt-4 flex-row gap-2">
+              {MODES.map(({ id, icon, label }) => {
+                const selected = mode === id;
+                return (
+                  <Pressable
+                    key={id}
+                    onPress={() => setMode(id)}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected }}
+                    accessibilityLabel={t(label)}
+                    className={`min-h-[32px] min-w-0 flex-1 flex-row items-center justify-center gap-1.5 rounded-full px-1.5 py-1.5 ${selected ? "bg-primary-fill" : "bg-surface-alt active:bg-primary-soft"}`}
+                  >
+                    <Ionicons
+                      name={icon}
+                      size={21}
+                      color={selected ? Colors.white : Colors.muted}
+                    />
+                    <Text
+                      className={`shrink text-center text-sm font-bold ${selected ? "text-white" : "text-foreground"}`}
+                    >
+                      {t(label)}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          </View>
+        }
+        ListEmptyComponent={
+          !initialized && isLoading ? (
+            <ActivityIndicator className="mt-8" color={Colors.primaryDark} />
+          ) : !initialized && error ? (
+            <View className="gap-3">
+              <EmptyState
+                title={t("recipes:home.loadErrorTitle")}
+                body={t("recipes:home.loadErrorBody")}
+              />
+              <Pressable
+                onPress={() => void initialize()}
+                accessibilityRole="button"
+                accessibilityLabel={t("recipes:home.retry")}
+                className="min-h-[44px] items-center justify-center self-center rounded-full bg-primary-soft px-5"
+              >
+                <Text className="font-bold text-primary-dark">
+                  {t("recipes:home.retry")}
+                </Text>
+              </Pressable>
+            </View>
           ) : (
             <EmptyState
               title={t(
-                mode === "created"
-                  ? "recipes:mine.emptyCreatedTitle"
-                  : "recipes:mine.emptyFavoritesTitle",
+                hasSearchFilters
+                  ? "recipes:search.emptyTitle"
+                  : `recipes:mine.empty${emptyKey}Title`,
               )}
               body={t(
-                mode === "created"
-                  ? "recipes:mine.emptyCreatedBody"
-                  : "recipes:mine.emptyFavoritesBody",
+                hasSearchFilters
+                  ? "recipes:search.emptyBody"
+                  : `recipes:mine.empty${emptyKey}Body`,
               )}
             />
-          )}
-        </View>
-      </ScrollView>
+          )
+        }
+      />
     </View>
   );
+}
+
+function RecipeListSeparator() {
+  return <View className="h-2.5" />;
 }

@@ -147,7 +147,14 @@ app.get("/health", async (_request, response, next) => {
 
 app.get("/api/recipes", async (request, response, next) => {
   try {
-    response.json(await getRecipes(getScopeKey(request)));
+    const scopeKey = getScopeKey(request);
+    const recipes = await getRecipes(scopeKey);
+    log.info("[RECIPES_GET] Collection loaded", {
+      scopeKey,
+      count: recipes.length,
+      createdCount: recipes.filter((recipe) => recipe.isUserCreated).length,
+    });
+    response.json(recipes);
   } catch (error) {
     next(error);
   }

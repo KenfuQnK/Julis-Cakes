@@ -11,21 +11,28 @@
  */
 export const Colors = {
   // Brand & actions
-  primary: "#FF5A4F",
-  primaryLight: "#FF8278",
-  primaryDark: "#E5473D",
-  primarySoft: "#FFF0ED",
+  primary: "#F45430",
+  primaryLight: "#FF805D",
+  primaryFill: "#CF4225",
+  primaryDark: "#BA371B",
+  primarySoft: "#FCE8DB",
 
   // Surfaces
-  background: "#FFF8F4",
-  surface: "#FFFFFF",
-  surfaceAlt: "#FFF1EC",
-  border: "#EDE1DC",
+  background: "#FBEEE2",
+  surface: "#FFFAF4",
+  surfaceAlt: "#F6E5D6",
+  border: "#EAD6C6",
 
   // Text & icons
-  foreground: "#18202A",
-  muted: "#6F7782",
-  icon: "#8A929C",
+  foreground: "#25160E",
+  muted: "#715D50",
+  icon: "#796457",
+
+  // Category labels
+  leaf: "#3E5E27",
+  leafSoft: "#EBECD7",
+  amber: "#744512",
+  amberSoft: "#FBE7CB",
 
   // Status
   success: "#39A96B",

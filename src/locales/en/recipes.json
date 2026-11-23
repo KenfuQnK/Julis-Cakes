@@ -99,6 +99,13 @@
     "saveErrorBody": "Check that the API is connected to Neon and try again."
   },
   "mine": {
+    "allCategories": "All categories",
+    "emptyAllTitle": "You don’t have any saved recipes yet",
+    "emptyAllBody": "Create a recipe or save one as a favorite to see it here.",
+    "searchPlaceholder": "Search my recipes…",
+    "filters": "Filter by category",
+    "featured": "Featured",
+    "actions": "Options for {{title}}",
     "title": "My recipes",
     "created": "Created",
     "favorites": "Favorites",

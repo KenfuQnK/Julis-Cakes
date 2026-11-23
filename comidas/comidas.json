@@ -1,0 +1,994 @@
+{
+  "version": 1,
+  "dishes": [
+    {
+      "id": "dish_c7f7783808f34b22973a2e68c5aeaae9",
+      "date": "2020-06-12",
+      "title": "Nachos",
+      "cover": "20230929_214606_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20230929_214606_AI1.png",
+          "date": "2023-09-29T21:46:06",
+          "hidden": false,
+          "crop": {
+            "x": 0,
+            "y": 0.07992893281244041,
+            "width": 1,
+            "height": 0.5517157236541101
+          }
+        },
+        {
+          "file": "20230929_214606.jpg",
+          "date": "2023-09-29T21:46:06",
+          "hidden": false,
+          "crop": {
+            "x": 0.019976137946633728,
+            "y": 0,
+            "width": 0.8168658088235294,
+            "height": 1
+          }
+        },
+        {
+          "file": "20200612_234619.jpg",
+          "date": "2020-06-12T23:46:19",
+          "hidden": false
+        },
+        {
+          "file": "20260717_214116.jpg",
+          "date": "2026-07-17T21:41:16",
+          "hidden": false
+        },
+        {
+          "file": "20231110_212103.jpg",
+          "date": "2023-11-10T21:21:03",
+          "hidden": false
+        },
+        {
+          "file": "20231110_212057.jpg",
+          "date": "2023-11-10T21:20:57",
+          "hidden": false
+        },
+        {
+          "file": "20231208_214548.jpg",
+          "date": "2023-12-08T21:45:48",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_3f0d8de634de4ac583c99a694b4fa7b9",
+      "date": "2020-07-24",
+      "title": "Hamburguesa pollo",
+      "cover": "20200724_211855_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20200724_211855_AI1.png",
+          "date": "2020-07-24T21:18:55",
+          "hidden": false,
+          "crop": {
+            "x": 0,
+            "y": 0.3154162924070689,
+            "width": 1,
+            "height": 0.5517157236541101
+          }
+        },
+        {
+          "file": "20200724_211847.jpg",
+          "date": "2020-07-24T21:18:47",
+          "hidden": false
+        },
+        {
+          "file": "20200724_211851.jpg",
+          "date": "2020-07-24T21:18:51",
+          "hidden": false
+        },
+        {
+          "file": "20200724_211855.jpg",
+          "date": "2020-07-24T21:18:55",
+          "hidden": false
+        },
+        {
+          "file": "20200724_211908.jpg",
+          "date": "2020-07-24T21:19:08",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_34f04709f9ea4f518a143eccd2b7b6c0",
+      "date": "2022-05-13",
+      "title": "Pizza queso cabra y champis",
+      "cover": "20220513_213550_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20220513_213550_AI1.png",
+          "date": "2022-05-13T21:35:50",
+          "hidden": false
+        },
+        {
+          "file": "20220513_213542.jpg",
+          "date": "2022-05-13T21:35:42",
+          "hidden": false
+        },
+        {
+          "file": "20220513_213550.jpg",
+          "date": "2022-05-13T21:35:50",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_f146aeea02d24ae98cccd219a41d9141",
+      "date": "2022-05-20",
+      "title": "Quesadillas",
+      "cover": "20220520_220631_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20220520_220631_AI1.png",
+          "date": "2022-05-20T22:06:31",
+          "hidden": false,
+          "crop": {
+            "x": 0,
+            "y": 0.325398706860174,
+            "width": 1,
+            "height": 0.5171470692898175
+          }
+        },
+        {
+          "file": "20220520_220631.jpg",
+          "date": "2022-05-20T22:06:31",
+          "hidden": false
+        },
+        {
+          "file": "20220520_220650.jpg",
+          "date": "2022-05-20T22:06:50",
+          "hidden": false
+        },
+        {
+          "file": "20220520_220659.jpg",
+          "date": "2022-05-20T22:06:59",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_4aaa8142630b4b0188385fcc4233f61d",
+      "date": "2022-10-31",
+      "title": "Salteado de carne con champiñones, cebolla y patatas fritas",
+      "cover": "20221031_142103_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20221031_142103_AI1.png",
+          "date": "2022-10-31T14:21:03",
+          "hidden": false
+        },
+        {
+          "file": "20221031_142103.jpg",
+          "date": "2022-10-31T14:21:03",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_318bfa4eae2a4a5f99a4a9019178774b",
+      "date": "2023-04-14",
+      "title": "Enchiladas de carne gratinadas con cebolla morada",
+      "cover": "20230414_215114_AI1.jpg",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20230414_215049.jpg",
+          "date": "2023-04-14T21:50:49",
+          "hidden": false
+        },
+        {
+          "file": "20230414_215056.jpg",
+          "date": "2023-04-14T21:50:56",
+          "hidden": false
+        },
+        {
+          "file": "20230414_215114.jpg",
+          "date": "2023-04-14T21:51:14",
+          "hidden": false
+        },
+        {
+          "file": "20230414_215114_AI1.jpg",
+          "date": "2023-04-14T21:51:14",
+          "hidden": false,
+          "crop": {
+            "x": 0,
+            "y": 0.27843982579596477,
+            "width": 1,
+            "height": 0.6001118397641197
+          }
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_9269242e715f4671aea11ee307f02691",
+      "date": "2023-06-16",
+      "title": "Kebab de carne con falafel, ensalada fresca y hummus",
+      "cover": "20230616_215119_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20230616_215119_AI1.png",
+          "date": "2023-06-16T21:51:19",
+          "hidden": false,
+          "crop": {
+            "x": 0,
+            "y": 0.20674225733159093,
+            "width": 1,
+            "height": 0.5171470692898175
+          }
+        },
+        {
+          "file": "20230616_215119.jpg",
+          "date": "2023-06-16T21:51:19",
+          "hidden": false
+        },
+        {
+          "file": "20230616_215124.jpg",
+          "date": "2023-06-16T21:51:24",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_2d74d5e29a684337a3217040d3827ba1",
+      "date": "2023-06-30",
+      "title": "Tacos",
+      "cover": "20230630_223127_AI1.jpg",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20230630_223127_AI1.jpg",
+          "date": "2023-06-30T22:31:27",
+          "hidden": false,
+          "crop": {
+            "x": 0,
+            "y": 0.3448727069633856,
+            "width": 1,
+            "height": 0.5475674851303951
+          }
+        },
+        {
+          "file": "20230630_223120.jpg",
+          "date": "2023-06-30T22:31:20",
+          "hidden": false
+        },
+        {
+          "file": "20230630_223127.jpg",
+          "date": "2023-06-30T22:31:27",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_45d76b056db84a4c94fea296b7ffe1d9",
+      "date": "2023-09-22",
+      "title": "Pizza gourmet",
+      "cover": "20230922_222949_AI1.jpg",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20230922_222949_AI1.jpg",
+          "date": "2023-09-22T22:29:49",
+          "hidden": false
+        },
+        {
+          "file": "20230922_222944.jpg",
+          "date": "2023-09-22T22:29:44",
+          "hidden": false
+        },
+        {
+          "file": "20230922_222949.jpg",
+          "date": "2023-09-22T22:29:49",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_53bbd2e1f3eb44308e70cc70073bd28c",
+      "date": "2023-09-29",
+      "title": "29/09/2023 - Sin nombre",
+      "cover": "20230929_213830.jpg",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20230929_213830.jpg",
+          "date": "2023-09-29T21:38:30",
+          "hidden": false
+        },
+        {
+          "file": "20230929_213753.jpg",
+          "date": "2023-09-29T21:37:53",
+          "hidden": false
+        },
+        {
+          "file": "20230929_213830_AI1.jpg",
+          "date": "2023-09-29T21:38:30",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_1888c0c8d0f64896badce38301eebc66",
+      "date": "2023-10-29",
+      "title": "29/10/2023 - Sin nombre",
+      "cover": "20231029_165408.jpg",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20231029_165408.jpg",
+          "date": "2023-10-29T16:54:08",
+          "hidden": true
+        },
+        {
+          "file": "20231029_161326.jpg",
+          "date": "2023-10-29T16:13:26",
+          "hidden": true
+        },
+        {
+          "file": "20231029_165417.jpg",
+          "date": "2023-10-29T16:54:17",
+          "hidden": true
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_2c4a4a3d08a341a4b503ae410eec34fc",
+      "date": "2023-11-10",
+      "title": "Tacos pili pili",
+      "cover": "20231110_212050.jpg",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20231110_212050.jpg",
+          "date": "2023-11-10T21:20:50",
+          "hidden": false,
+          "crop": {
+            "x": 0,
+            "y": 0.4561052367475241,
+            "width": 1,
+            "height": 0.38716892888007726
+          }
+        },
+        {
+          "file": "20231110_212044.jpg",
+          "date": "2023-11-10T21:20:44",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_074c1d7454fb46ee83a4709e66599f2f",
+      "date": "2023-11-24",
+      "title": "Burrito con berenjena",
+      "cover": "20231124_220103_AI1.jpg",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20231124_220103_AI1.jpg",
+          "date": "2023-11-24T22:01:03",
+          "hidden": false,
+          "crop": {
+            "x": 0,
+            "y": 0.4428119509907708,
+            "width": 1,
+            "height": 0.5378882619083931
+          }
+        },
+        {
+          "file": "20231124_220103.jpg",
+          "date": "2023-11-24T22:01:03",
+          "hidden": false,
+          "crop": {
+            "x": 0,
+            "y": 0.13482009618527513,
+            "width": 1,
+            "height": 0.38716892888007726
+          }
+        },
+        {
+          "file": "20231124_220058.jpg",
+          "date": "2023-11-24T22:00:58",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_21711171403f4837b9ac6fe936cf70da",
+      "date": "2023-11-26",
+      "title": "26/11/2023 - Sin nombre",
+      "cover": "20231126_135303.jpg",
+      "manuallyOrganized": false,
+      "photos": [
+        {
+          "file": "20231126_135303.jpg",
+          "date": "2023-11-26T13:53:03",
+          "hidden": false
+        },
+        {
+          "file": "20231126_135306.jpg",
+          "date": "2023-11-26T13:53:06",
+          "hidden": false
+        },
+        {
+          "file": "20231126_135310.jpg",
+          "date": "2023-11-26T13:53:10",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_df03494a20ab447081c5ce3a39c64531",
+      "date": "2023-12-08",
+      "title": "08/12/2023 - Sin nombre",
+      "cover": "20231208_214544_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20231208_214544_AI1.png",
+          "date": "2023-12-08T21:45:44",
+          "hidden": false
+        },
+        {
+          "file": "20231208_214544.jpg",
+          "date": "2023-12-08T21:45:44",
+          "hidden": false
+        },
+        {
+          "file": "20231208_214554.jpg",
+          "date": "2023-12-08T21:45:54",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_4d16f75133c44f8f9beb9e425cf6dae7",
+      "date": "2024-01-12",
+      "title": "Cheesecake chocobom",
+      "cover": "20240112_182553_AI1.jpg",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20240112_182553_AI1.jpg",
+          "date": "2024-01-12T18:25:53",
+          "hidden": false
+        },
+        {
+          "file": "20240112_182517.jpg",
+          "date": "2024-01-12T18:25:17",
+          "hidden": false
+        },
+        {
+          "file": "20240112_182539.jpg",
+          "date": "2024-01-12T18:25:39",
+          "hidden": false
+        },
+        {
+          "file": "20240112_182553.jpg",
+          "date": "2024-01-12T18:25:53",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_85402391289e4dafb3abea5f91771472",
+      "date": "2024-03-28",
+      "title": "28/03/2024 - Sin nombre",
+      "cover": "20240328_221156.jpg",
+      "manuallyOrganized": false,
+      "photos": [
+        {
+          "file": "20240328_221156.jpg",
+          "date": "2024-03-28T22:11:56",
+          "hidden": false
+        },
+        {
+          "file": "20240328_221202.jpg",
+          "date": "2024-03-28T22:12:02",
+          "hidden": false
+        },
+        {
+          "file": "20240328_221211.jpg",
+          "date": "2024-03-28T22:12:11",
+          "hidden": false
+        },
+        {
+          "file": "20240328_221222.jpg",
+          "date": "2024-03-28T22:12:22",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_36b6f8653ecc4f9c88314d3f45bf205a",
+      "date": "2024-06-14",
+      "title": "14/06/2024 - Sin nombre",
+      "cover": "20240614_220233_AI1.jpg",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20240614_220233_AI1.jpg",
+          "date": "2024-06-14T22:02:33",
+          "hidden": false
+        },
+        {
+          "file": "20240614_220233.jpg",
+          "date": "2024-06-14T22:02:33",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_5632bae95db942afbd39ef96475b3779",
+      "date": "2024-09-20",
+      "title": "Burrito case de patata y kebab",
+      "cover": "20240920_223424_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20240920_223424_AI1.png",
+          "date": "2024-09-20T22:34:24",
+          "hidden": false
+        },
+        {
+          "file": "20240920_223334.jpg",
+          "date": "2024-09-20T22:33:34",
+          "hidden": false
+        },
+        {
+          "file": "20240920_223344.jpg",
+          "date": "2024-09-20T22:33:44",
+          "hidden": false
+        },
+        {
+          "file": "20240920_223424.jpg",
+          "date": "2024-09-20T22:34:24",
+          "hidden": false
+        },
+        {
+          "file": "20240920_223435.jpg",
+          "date": "2024-09-20T22:34:35",
+          "hidden": false
+        },
+        {
+          "file": "20240920_223438.jpg",
+          "date": "2024-09-20T22:34:38",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_95d672a29a044c89ab4a7f5bdcc780f6",
+      "date": "2024-09-22",
+      "title": "Filetes en salsa de champiñones",
+      "cover": "20240922_140049.jpg",
+      "manuallyOrganized": false,
+      "photos": [
+        {
+          "file": "20240922_140049.jpg",
+          "date": "2024-09-22T14:00:49",
+          "hidden": false
+        },
+        {
+          "file": "20240922_140054.jpg",
+          "date": "2024-09-22T14:00:54",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_4625e095661549a79e2b3830408265db",
+      "date": "2024-09-27",
+      "title": "Tortilla rellena de pollo y verduras",
+      "cover": "20240927_214248_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20240927_214248_AI1.png",
+          "date": "2024-09-27T21:42:48",
+          "hidden": false,
+          "crop": {
+            "x": 0.0679321109547334,
+            "y": 0,
+            "width": 0.8186810661764706,
+            "height": 1
+          }
+        },
+        {
+          "file": "20240927_213753.jpg",
+          "date": "2024-09-27T21:37:53",
+          "hidden": false
+        },
+        {
+          "file": "20240927_214248.jpg",
+          "date": "2024-09-27T21:42:48",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_a0ca603432a34a4aa75083d75b3d7602",
+      "date": "2024-10-11",
+      "title": "Pollo crujiente con verduras salteadas",
+      "cover": "20241011_211645_AI1.jpg",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20241011_211625.jpg",
+          "date": "2024-10-11T21:16:25",
+          "hidden": false
+        },
+        {
+          "file": "20241011_211639.jpg",
+          "date": "2024-10-11T21:16:39",
+          "hidden": false
+        },
+        {
+          "file": "20241011_211645.jpg",
+          "date": "2024-10-11T21:16:45",
+          "hidden": false
+        },
+        {
+          "file": "20241011_211645_AI1.jpg",
+          "date": "2024-10-11T21:16:45",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_40466a39093b47e696afc426954cf471",
+      "date": "2024-10-18",
+      "title": "Tacos de carne y granada",
+      "cover": "20241018_212631_AI1.jpg",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20241018_212631_AI1.jpg",
+          "date": "2024-10-18T21:26:31",
+          "hidden": false
+        },
+        {
+          "file": "20241018_212625.jpg",
+          "date": "2024-10-18T21:26:25",
+          "hidden": false
+        },
+        {
+          "file": "20241018_212631.jpg",
+          "date": "2024-10-18T21:26:31",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_9bd71fd6a9fd44fe87eff01a11eaf3c4",
+      "date": "2024-11-15",
+      "title": "Burritos caseros",
+      "cover": "20241115_220149_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20241115_220149_AI1.png",
+          "date": "2024-11-15T22:01:49",
+          "hidden": false,
+          "crop": {
+            "x": 0,
+            "y": 0.4780110362149251,
+            "width": 1,
+            "height": 0.38716892888007726
+          }
+        },
+        {
+          "file": "20241115_220149.jpg",
+          "date": "2024-11-15T22:01:49",
+          "hidden": false,
+          "crop": {
+            "x": 0,
+            "y": 0.4104680983501848,
+            "width": 1,
+            "height": 0.38716892888007726
+          }
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_b6bd03c1e0b94c99978de329634e4ab2",
+      "date": "2024-11-22",
+      "title": "Quesadillas con cebolla morada",
+      "cover": "20241122_214316_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20241122_214316_AI1.png",
+          "date": "2024-11-22T21:43:16",
+          "hidden": false
+        },
+        {
+          "file": "20241122_214316.jpg",
+          "date": "2024-11-22T21:43:16",
+          "hidden": false
+        },
+        {
+          "file": "20241122_214328.jpg",
+          "date": "2024-11-22T21:43:28",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_deaf527830f049faaf8d71b6df4ac18f",
+      "date": "2024-11-29",
+      "title": "Salmón crujiente con verduras asadas ",
+      "cover": "20241129_215849_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20241129_215849_AI1.png",
+          "date": "2024-11-29T21:58:49",
+          "hidden": false
+        },
+        {
+          "file": "20241129_215849.jpg",
+          "date": "2024-11-29T21:58:49",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_e14d694939bf43e2bf14219242b1ab4e",
+      "date": "2025-01-31",
+      "title": "Tacos",
+      "cover": "20250131_213841.jpg",
+      "manuallyOrganized": false,
+      "photos": [
+        {
+          "file": "20250131_213841.jpg",
+          "date": "2025-01-31T21:38:41",
+          "hidden": false
+        },
+        {
+          "file": "20250131_213845.jpg",
+          "date": "2025-01-31T21:38:45",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_8efec9d878cf4c678f7db7bba5df98d8",
+      "date": "2026-02-06",
+      "title": "Rollo de patata gratinado",
+      "cover": "20260206_215324_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20260206_215324_AI1.png",
+          "date": "2026-02-06T21:53:24",
+          "hidden": false
+        },
+        {
+          "file": "20260206_215317.jpg",
+          "date": "2026-02-06T21:53:17",
+          "hidden": false
+        },
+        {
+          "file": "20260206_215324.jpg",
+          "date": "2026-02-06T21:53:24",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_dbc507705771497d9cceac5e609b07fb",
+      "date": "2026-03-20",
+      "title": "Rosas de baklava crujientes en cazuela",
+      "cover": "20260320_173231_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20260320_173231_AI1.png",
+          "date": "2026-03-20T17:32:31",
+          "hidden": false
+        },
+        {
+          "file": "20260320_173221.jpg",
+          "date": "2026-03-20T17:32:21",
+          "hidden": false
+        },
+        {
+          "file": "20260320_173231.jpg",
+          "date": "2026-03-20T17:32:31",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_86a99ee7398e43d1ae6dde85215c6637",
+      "date": "2026-03-27",
+      "title": "Bocaditos rellenos y salsa pimientos",
+      "cover": "20260327_214150_AI1.jpg",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20260327_214150_AI1.jpg",
+          "date": "2026-03-27T21:41:50",
+          "hidden": false,
+          "crop": {
+            "x": 0,
+            "y": 0.358584615049895,
+            "width": 1,
+            "height": 0.4507752529103757
+          }
+        },
+        {
+          "file": "20260327_214150.jpg",
+          "date": "2026-03-27T21:41:50",
+          "hidden": false
+        },
+        {
+          "file": "20260327_214207.jpg",
+          "date": "2026-03-27T21:42:07",
+          "hidden": false
+        },
+        {
+          "file": "20260327_214217.jpg",
+          "date": "2026-03-27T21:42:17",
+          "hidden": false
+        },
+        {
+          "file": "20260327_214236.jpg",
+          "date": "2026-03-27T21:42:36",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_852c6b0cde4f49578adde4e49fc9e83a",
+      "date": "2026-04-17",
+      "title": "Brochetas con salsa cremosa",
+      "cover": "20260417_215146_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20260417_215146_AI1.png",
+          "date": "2026-04-17T21:51:46",
+          "hidden": false
+        },
+        {
+          "file": "20260417_211416.jpg",
+          "date": "2026-04-17T21:14:16",
+          "hidden": true
+        },
+        {
+          "file": "20260417_215146.jpg",
+          "date": "2026-04-17T21:51:46",
+          "hidden": false
+        },
+        {
+          "file": "20260417_215151.jpg",
+          "date": "2026-04-17T21:51:51",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_b394bf40585c4db3aee3fcda5f6342b4",
+      "date": "2026-09-04",
+      "title": "Conos crujientes rellenos",
+      "cover": "20260904_212529.jpg",
+      "manuallyOrganized": false,
+      "photos": [
+        {
+          "file": "20260904_212529.jpg",
+          "date": "2026-09-04T21:25:29",
+          "hidden": false
+        },
+        {
+          "file": "20260904_212543.jpg",
+          "date": "2026-09-04T21:25:43",
+          "hidden": false
+        },
+        {
+          "file": "20260904_212546.jpg",
+          "date": "2026-09-04T21:25:46",
+          "hidden": false
+        },
+        {
+          "file": "20260904_212551.jpg",
+          "date": "2026-09-04T21:25:51",
+          "hidden": false
+        },
+        {
+          "file": "20260904_212600.jpg",
+          "date": "2026-09-04T21:26:00",
+          "hidden": false
+        },
+        {
+          "file": "20260904_212608.jpg",
+          "date": "2026-09-04T21:26:08",
+          "hidden": false
+        },
+        {
+          "file": "20260904_212611.jpg",
+          "date": "2026-09-04T21:26:11",
+          "hidden": false
+        },
+        {
+          "file": "20260904_212529_AI.jpg",
+          "date": "2026-09-04T21:25:29",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    },
+    {
+      "id": "dish_f3ea0aec97434a0699e29d9ee588b17d",
+      "date": "2026-09-18",
+      "title": "Roll de hojaldre dorado con sésamo",
+      "cover": "20260918_205051_AI1.png",
+      "manuallyOrganized": true,
+      "photos": [
+        {
+          "file": "20260918_205051_AI1.png",
+          "date": "2026-09-18T20:50:51",
+          "hidden": false
+        },
+        {
+          "file": "20260918_205051.jpg",
+          "date": "2026-09-18T20:50:51",
+          "hidden": false
+        },
+        {
+          "file": "20260918_205059.jpg",
+          "date": "2026-09-18T20:50:59",
+          "hidden": false
+        },
+        {
+          "file": "20260918_205112.jpg",
+          "date": "2026-09-18T20:51:12",
+          "hidden": false
+        }
+      ],
+      "favorite": false
+    }
+  ]
+}
