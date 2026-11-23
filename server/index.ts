@@ -33,6 +33,11 @@ app.use(cors());
 app.use(express.json({ limit: "2mb" }));
 
 function getScopeKey(request: Request): string {
+  const configuredScope = process.env.JULIS_RECIPES_SCOPE_KEY;
+  if (configuredScope && /^[a-zA-Z0-9._-]{8,160}$/.test(configuredScope)) {
+    return configuredScope;
+  }
+
   const header = request.header("x-julis-client-id");
   return header && /^[a-zA-Z0-9._-]{8,160}$/.test(header) ? header : "default";
 }
