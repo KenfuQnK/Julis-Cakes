@@ -42,6 +42,10 @@ export function getApiBaseUrl(): string {
   const configuredUrl = process.env.EXPO_PUBLIC_API_URL;
   if (configuredUrl) return configuredUrl.replace(/\/$/, "");
 
+  // In production web builds, keep API requests on the same origin so Vercel
+  // routes them to the project's serverless functions.
+  if (Platform.OS === "web") return "";
+
   const port = process.env.EXPO_PUBLIC_API_PORT ?? "8791";
   const host =
     getDevServerHost() ??
