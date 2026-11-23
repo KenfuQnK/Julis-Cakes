@@ -95,26 +95,31 @@
     "deleteBody": "This action cannot be undone.",
     "deleteConfirm": "Delete",
     "deleteCancel": "Cancel",
+    "deleteError": "The recipe could not be deleted. Try again.",
     "saveErrorTitle": "Couldn't save recipe",
     "saveErrorBody": "Check that the API is connected to Neon and try again."
   },
   "mine": {
+    "cardSize": {
+      "title": "Card size",
+      "action": "Change card size for {{title}}",
+      "square": "Square",
+      "vertical": "Vertical",
+      "horizontal": "Horizontal"
+    },
     "allCategories": "All categories",
     "emptyAllTitle": "You don’t have any saved recipes yet",
     "emptyAllBody": "Create a recipe or save one as a favorite to see it here.",
     "searchPlaceholder": "Search my recipes…",
     "filters": "Filter by category",
     "featured": "Featured",
-    "actions": "Options for {{title}}",
     "title": "My recipes",
     "created": "Created",
     "favorites": "Favorites",
     "emptyCreatedTitle": "You haven't created any recipes yet",
     "emptyCreatedBody": "Save your own recipes here so they are always close by.",
     "emptyFavoritesTitle": "Your list is waiting",
-    "emptyFavoritesBody": "Favorite a recipe and it will appear here.",
-    "deleteLabel": "Delete {{title}}",
-    "editLabel": "Edit {{title}}"
+    "emptyFavoritesBody": "Favorite a recipe and it will appear here."
   },
   "ai": {
     "title": "AI assistant",

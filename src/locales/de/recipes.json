@@ -95,26 +95,31 @@
     "deleteBody": "Diese Aktion kann nicht rückgängig gemacht werden.",
     "deleteConfirm": "Löschen",
     "deleteCancel": "Abbrechen",
+    "deleteError": "Das Rezept konnte nicht gelöscht werden. Versuche es erneut.",
     "saveErrorTitle": "Rezept konnte nicht gespeichert werden",
     "saveErrorBody": "Prüfe, ob die API mit Neon verbunden ist, und versuche es erneut."
   },
   "mine": {
+    "cardSize": {
+      "title": "Kartengröße",
+      "action": "Kartengröße für {{title}} ändern",
+      "square": "Quadrat",
+      "vertical": "Hochformat",
+      "horizontal": "Querformat"
+    },
     "allCategories": "Alle Kategorien",
     "emptyAllTitle": "Du hast noch keine gespeicherten Rezepte",
     "emptyAllBody": "Erstelle ein Rezept oder markiere es als Favorit, damit es hier erscheint.",
     "searchPlaceholder": "Meine Rezepte durchsuchen…",
     "filters": "Nach Kategorie filtern",
     "featured": "Empfohlen",
-    "actions": "Optionen für {{title}}",
     "title": "Meine Rezepte",
     "created": "Erstellt",
     "favorites": "Favoriten",
     "emptyCreatedTitle": "Du hast noch keine Rezepte erstellt",
     "emptyCreatedBody": "Speichere deine Rezepte hier, damit sie immer griffbereit sind.",
     "emptyFavoritesTitle": "Deine Liste wartet",
-    "emptyFavoritesBody": "Markiere ein Rezept als Favorit, damit es hier erscheint.",
-    "deleteLabel": "{{title}} löschen",
-    "editLabel": "{{title}} bearbeiten"
+    "emptyFavoritesBody": "Markiere ein Rezept als Favorit, damit es hier erscheint."
   },
   "ai": {
     "title": "KI-Assistent",

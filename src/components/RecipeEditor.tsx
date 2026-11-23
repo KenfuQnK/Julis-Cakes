@@ -166,8 +166,6 @@ export function RecipeEditor({
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [4, 3],
       // Compression happens once, on the way out, in uploadRecipeImage.
       quality: 1,
     });

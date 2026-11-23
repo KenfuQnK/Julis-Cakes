@@ -1,4 +1,4 @@
-import { Image, View } from "react-native";
+import { Image, View, type ImageResizeMode } from "react-native";
 
 import { RecipeImagePlaceholder } from "@/src/components/RecipeImagePlaceholder";
 import type { RecipeCategory } from "@/src/types/recipe";
@@ -8,6 +8,7 @@ interface RecipeImageProps {
   category?: RecipeCategory;
   className?: string;
   placeholderIconSize?: number;
+  resizeMode?: ImageResizeMode;
 }
 
 export function RecipeImage({
@@ -15,12 +16,13 @@ export function RecipeImage({
   category,
   className = "",
   placeholderIconSize,
+  resizeMode = "cover",
 }: RecipeImageProps) {
   if (imageUri) {
     return (
       <Image
         source={{ uri: imageUri }}
-        resizeMode="cover"
+        resizeMode={resizeMode}
         className={className}
       />
     );
