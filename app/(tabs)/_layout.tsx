@@ -11,6 +11,11 @@ import { Colors } from "@/src/constants/Colors";
 export default function TabLayout() {
   const { t } = useTranslation(["recipes"]);
   const { bottom } = useSafeAreaInsets();
+  const recipesLabelStyle = {
+    fontSize: 10,
+    fontWeight: "600",
+    marginBottom: 2,
+  } as const;
 
   return (
     <Tabs
@@ -81,10 +86,27 @@ export default function TabLayout() {
         options={{
           title: t("recipes:nav.mine"),
           tabBarAccessibilityLabel: t("recipes:nav.mine"),
+          tabBarLabelStyle: recipesLabelStyle,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="notebook-outline"
               size={26}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="recipes-2"
+        options={{
+          title: t("recipes:nav.mine2"),
+          tabBarAccessibilityLabel: t("recipes:nav.mine2"),
+          tabBarItemStyle: { borderRadius: 20, overflow: "hidden", flex: 1.16 },
+          tabBarLabelStyle: recipesLabelStyle,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="image-multiple-outline"
+              size={24}
               color={color}
             />
           ),

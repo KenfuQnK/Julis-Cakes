@@ -3,9 +3,13 @@ node_modules/
 .env.*
 !.env.example
 .expo/
+dist/
 dist-server/
 .send/
 .bkp/
+__pycache__/
+*.py[cod]
+desktop.ini
 
 comidas/fotos/
 

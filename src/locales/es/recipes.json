@@ -5,6 +5,7 @@
     "search": "Buscar",
     "create": "Crear",
     "mine": "Mis recetas",
+    "mine2": "Mis recetas 2",
     "ai": "IA"
   },
   "home": {
@@ -120,6 +121,33 @@
     "emptyCreatedBody": "Guarda aquí tus recetas para tenerlas siempre a mano.",
     "emptyFavoritesTitle": "Tu lista está esperando",
     "emptyFavoritesBody": "Marca una receta como favorita y aparecerá aquí."
+  },
+  "cover": {
+    "menu": "Opciones de {{title}}",
+    "edit": "Editar portada",
+    "preview": "Vista previa de {{title}}",
+    "gestures": "Arrastra la foto para encuadrarla. Pellizca o usa los controles para ajustar el zoom.",
+    "noPhoto": "Añade una foto a la receta para ajustar el encuadre.",
+    "titleSide": "Posición del título",
+    "left": "Izquierda",
+    "right": "Derecha",
+    "zoom": "Zoom",
+    "shade": "Intensidad del degradado",
+    "blur": "Extensión desenfocada",
+    "reset": "Restablecer ajustes automáticos",
+    "save": "Guardar",
+    "saveError": "No se pudo guardar la portada. Inténtalo de nuevo.",
+    "loadError": "No se pudieron cargar los ajustes de la portada.",
+    "unavailable": "La receta no está disponible.",
+    "percentage": "{{value}} %",
+    "less": "Reducir: {{label}}",
+    "more": "Aumentar: {{label}}",
+    "move": {
+      "left": "Mover a la izquierda",
+      "right": "Mover a la derecha",
+      "up": "Mover arriba",
+      "down": "Mover abajo"
+    }
   },
   "ai": {
     "title": "Asistente IA",

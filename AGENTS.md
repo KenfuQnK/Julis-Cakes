@@ -2,6 +2,17 @@
 
 **Última actualización:** 2026-01-08
 
+## Navegación del repositorio y contexto
+
+- Para cualquier cambio, empieza por [`docs/development/MAP.md`](docs/development/MAP.md): la tabla relaciona tareas con sus puntos de entrada y evita leer carpetas enteras.
+- Lee [`docs/development/CONTRIBUTING.md`](docs/development/CONTRIBUTING.md) para el flujo de trabajo y las comprobaciones pertinentes.
+- Consulta [`docs/development/DECISIONS.md`](docs/development/DECISIONS.md) solo cuando una decisión técnica o una trampa no obvia sea relevante.
+- Para localizar recursos visuales, usa [`docs/development/UI_ASSETS.md`](docs/development/UI_ASSETS.md).
+- No leas todos los archivos de `.ai/` por defecto: selecciona la especificación de `.ai/features/` o la skill de `.ai/skills/` que corresponda a la tarea. La descripción general de producto está en `.ai/description.md`.
+- Evita buscar o abrir dependencias, cachés, builds y galerías grandes; las exclusiones concretas están en `docs/development/MAP.md`.
+
+Los documentos de `docs/development/` son índices y guías breves. `AGENTS.md` sigue siendo la fuente de instrucciones generales; consulta cada documento por el área que afecte.
+
 ---
 
 nota personal: revisar esto:
@@ -744,6 +755,9 @@ Cuando se te pida hacer cambios:
 ---
 
 ## 🧠 Gotchas Aprendidos
+
+- En este proyecto, `Image.getSize(uri)` devuelve una promesa en nativo. React Native Web requiere los callbacks de éxito y error, aunque los tipos de React Native acepten la firma con promesa.
+- Si Ninja falla en Windows con `Filename longer than 260 characters` al compilar Android, configura un directorio de staging de CMake corto y `CMAKE_OBJECT_PATH_MAX=235` en el proyecto Android generado. Se puede aplicar en una copia temporal para evitar cambios en la configuración del repositorio.
 
 Añade en este fichero AGENTS.md cualquier detalle no obvio que descubras especialmente sobre errores repetitivos que encuentres — no lo dejes solo en el historial de chat de una sesión de IA.
 

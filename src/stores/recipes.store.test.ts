@@ -8,7 +8,7 @@ import { useRecipesStore } from "./recipes.store";
 jest.mock("@react-native-async-storage/async-storage", () => ({
   __esModule: true,
   default: {
-    getItem: jest.fn(),
+    getItem: jest.fn().mockResolvedValue(null),
     setItem: jest.fn(),
     removeItem: jest.fn(),
   },

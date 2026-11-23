@@ -37,6 +37,18 @@ export default function RootLayout() {
               }}
             />
             <Stack.Screen
+              name="recipe/cover-menu"
+              options={{
+                presentation: "transparentModal",
+                headerShown: false,
+                animation: "fade",
+              }}
+            />
+            <Stack.Screen
+              name="recipe/cover-edit"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="recipe/[id]"
               options={{
                 headerShown: false,

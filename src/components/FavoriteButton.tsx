@@ -8,9 +8,10 @@ import { Colors } from "@/src/constants/Colors";
 interface FavoriteButtonProps {
   isFavorite: boolean;
   title: string;
-  onPress: () => void;
+  onPress?: () => void;
   light?: boolean;
   collection?: boolean;
+  cover?: boolean;
 }
 
 export function FavoriteButton({
@@ -19,12 +20,15 @@ export function FavoriteButton({
   onPress,
   light = false,
   collection = false,
+  cover = false,
 }: FavoriteButtonProps) {
   const { t } = useTranslation(["recipes"]);
 
   return (
     <Pressable
       onPress={onPress}
+      disabled={!onPress}
+      focusable={Boolean(onPress)}
       hitSlop={collection ? 6 : undefined}
       accessibilityRole="button"
       accessibilityState={{ selected: isFavorite }}
@@ -34,13 +38,19 @@ export function FavoriteButton({
           : "recipes:accessibility.toggleFavoriteOff",
         { title },
       )}
-      className={`h-8 w-8 items-center justify-center rounded-full active:opacity-60 ${collection ? (isFavorite ? "bg-surface/80" : "bg-surface/55") : "bg-white/80"}`}
+      className={`items-center justify-center rounded-full active:opacity-60 ${cover ? (isFavorite ? "h-11 w-11 bg-surface" : "h-11 w-11 border border-white bg-black/35") : collection ? (isFavorite ? "h-8 w-8 bg-surface/80" : "h-8 w-8 bg-surface/55") : "h-8 w-8 bg-white/80"}`}
     >
-      {collection ? (
+      {collection || cover ? (
         <Ionicons
           name={isFavorite ? "heart" : "heart-outline"}
-          size={19}
-          color={isFavorite ? Colors.primaryDark : Colors.foreground}
+          size={cover ? 23 : 19}
+          color={
+            isFavorite
+              ? Colors.primaryDark
+              : cover
+                ? Colors.white
+                : Colors.foreground
+          }
         />
       ) : (
         <FontAwesome

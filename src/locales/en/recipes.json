@@ -5,6 +5,7 @@
     "search": "Search",
     "create": "Create",
     "mine": "My recipes",
+    "mine2": "My recipes 2",
     "ai": "AI"
   },
   "home": {
@@ -120,6 +121,33 @@
     "emptyCreatedBody": "Save your own recipes here so they are always close by.",
     "emptyFavoritesTitle": "Your list is waiting",
     "emptyFavoritesBody": "Favorite a recipe and it will appear here."
+  },
+  "cover": {
+    "menu": "Options for {{title}}",
+    "edit": "Edit cover",
+    "preview": "Preview of {{title}}",
+    "gestures": "Drag the photo to frame it. Pinch or use the controls to zoom.",
+    "noPhoto": "Add a photo to the recipe to adjust its framing.",
+    "titleSide": "Title position",
+    "left": "Left",
+    "right": "Right",
+    "zoom": "Zoom",
+    "shade": "Gradient intensity",
+    "blur": "Blurred extension",
+    "reset": "Reset automatic settings",
+    "save": "Save",
+    "saveError": "Could not save the cover. Try again.",
+    "loadError": "Could not load the cover settings.",
+    "unavailable": "This recipe is unavailable.",
+    "percentage": "{{value}}%",
+    "less": "Decrease {{label}}",
+    "more": "Increase {{label}}",
+    "move": {
+      "left": "Move left",
+      "right": "Move right",
+      "up": "Move up",
+      "down": "Move down"
+    }
   },
   "ai": {
     "title": "AI assistant",

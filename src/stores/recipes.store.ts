@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 import * as recipesService from "@/src/services/recipes.service";
 import { useRecipeCardSizesStore } from "@/src/stores/recipeCardSizes.store";
+import { useRecipeCoversStore } from "@/src/stores/recipeCovers.store";
 import type { Recipe } from "@/src/types/recipe";
 import { createLogger } from "@/src/utils/logger";
 
@@ -107,6 +108,12 @@ export const useRecipesStore = create<RecipesStore>((set, get) => ({
       const recipes = await recipesService.fetchRecipes();
       set({ recipes });
       useRecipeCardSizesStore.getState().removeSize(id);
+      void useRecipeCoversStore
+        .getState()
+        .save(id)
+        .catch(() => {
+          log.warn("Could not remove the local recipe cover", { recipeId: id });
+        });
     } catch (error) {
       set({
         recipes: previousRecipes,

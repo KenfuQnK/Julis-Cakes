@@ -5,6 +5,7 @@
     "search": "Rechercher",
     "create": "Créer",
     "mine": "Mes recettes",
+    "mine2": "Mes recettes 2",
     "ai": "IA"
   },
   "home": {
@@ -120,6 +121,33 @@
     "emptyCreatedBody": "Gardez vos recettes ici pour les avoir toujours sous la main.",
     "emptyFavoritesTitle": "Votre liste vous attend",
     "emptyFavoritesBody": "Ajoutez une recette aux favoris pour la voir ici."
+  },
+  "cover": {
+    "menu": "Options de {{title}}",
+    "edit": "Modifier la couverture",
+    "preview": "Aperçu de {{title}}",
+    "gestures": "Faites glisser la photo pour la cadrer. Pincez ou utilisez les commandes pour zoomer.",
+    "noPhoto": "Ajoutez une photo à la recette pour ajuster le cadrage.",
+    "titleSide": "Position du titre",
+    "left": "Gauche",
+    "right": "Droite",
+    "zoom": "Zoom",
+    "shade": "Intensité du dégradé",
+    "blur": "Extension floutée",
+    "reset": "Rétablir les réglages automatiques",
+    "save": "Enregistrer",
+    "saveError": "Impossible d’enregistrer la couverture. Réessayez.",
+    "loadError": "Impossible de charger les réglages de la couverture.",
+    "unavailable": "Cette recette est indisponible.",
+    "percentage": "{{value}} %",
+    "less": "Diminuer : {{label}}",
+    "more": "Augmenter : {{label}}",
+    "move": {
+      "left": "Déplacer à gauche",
+      "right": "Déplacer à droite",
+      "up": "Déplacer vers le haut",
+      "down": "Déplacer vers le bas"
+    }
   },
   "ai": {
     "title": "Assistant IA",
