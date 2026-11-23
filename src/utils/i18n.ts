@@ -73,31 +73,39 @@ const resources = {
   },
 };
 
-// Custom detector: persisted choice -> device locale -> fallback ('en').
+function isSupportedLanguage(
+  language: string | null | undefined,
+): language is SupportedLanguage {
+  return Boolean(
+    language &&
+    Object.prototype.hasOwnProperty.call(SUPPORTED_LANGUAGES, language),
+  );
+}
+
+function getDeviceLanguage(): SupportedLanguage {
+  const languageCode = Localization.getLocales()[0]?.languageCode;
+  return isSupportedLanguage(languageCode) ? languageCode : "en";
+}
+
+// Keep the web language deterministic during static rendering and hydration.
+// The stored preference is restored after hydration in the root layout.
 const languageDetector = {
   type: "languageDetector" as const,
   async: true,
   detect: async (callback: (lng: string) => void) => {
     try {
-      const platformOS = Platform?.OS;
-      const canUseStorage =
-        platformOS !== "web" || typeof window !== "undefined";
-
-      const savedLanguage = canUseStorage
-        ? await AsyncStorage.getItem(LANGUAGE_KEY)
-        : null;
-      if (savedLanguage) {
-        callback(savedLanguage);
+      if (Platform.OS === "web") {
+        callback("en");
         return;
       }
 
-      const deviceLanguage = Localization.getLocales()[0]?.languageCode ?? "en";
-      const supportedLanguage = Object.keys(SUPPORTED_LANGUAGES).includes(
-        deviceLanguage,
-      )
-        ? deviceLanguage
-        : "en";
-      callback(supportedLanguage);
+      const savedLanguage = await AsyncStorage.getItem(LANGUAGE_KEY);
+      if (savedLanguage) {
+        callback(isSupportedLanguage(savedLanguage) ? savedLanguage : "en");
+        return;
+      }
+
+      callback(getDeviceLanguage());
     } catch (error) {
       console.error("Error detecting language:", error);
       callback("en");
@@ -137,5 +145,22 @@ i18n
       caches: ["languageDetector"],
     },
   });
+
+export async function initializeLanguagePreference(): Promise<void> {
+  if (Platform.OS !== "web" || typeof window === "undefined") return;
+
+  try {
+    const savedLanguage = await AsyncStorage.getItem(LANGUAGE_KEY);
+    const preferredLanguage = isSupportedLanguage(savedLanguage)
+      ? savedLanguage
+      : getDeviceLanguage();
+
+    if (preferredLanguage !== i18n.language) {
+      await i18n.changeLanguage(preferredLanguage);
+    }
+  } catch (error) {
+    console.error("Error restoring language preference:", error);
+  }
+}
 
 export { i18n };
