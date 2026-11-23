@@ -2,6 +2,7 @@ import type { Recipe } from "@/src/types/recipe";
 
 import * as recipesService from "@/src/services/recipes.service";
 
+import { useRecipeCardSizesStore } from "./recipeCardSizes.store";
 import { useRecipesStore } from "./recipes.store";
 
 jest.mock("@react-native-async-storage/async-storage", () => ({
@@ -62,11 +63,16 @@ describe("useRecipesStore", () => {
       .mockResolvedValueOnce([]);
 
     useRecipesStore.setState({ recipes: [recipe] });
+    useRecipeCardSizesStore.getState().setSize(recipe.id, "vertical");
     await useRecipesStore.getState().toggleFavorite(recipe.id);
     expect(useRecipesStore.getState().recipes[0]?.isFavorite).toBe(true);
+    expect(useRecipeCardSizesStore.getState().sizes[recipe.id]).toBe(
+      "vertical",
+    );
 
     await useRecipesStore.getState().deleteRecipe(recipe.id);
     expect(useRecipesStore.getState().recipes).toHaveLength(0);
+    expect(useRecipeCardSizesStore.getState().sizes[recipe.id]).toBeUndefined();
   });
 
   it("revierte una creación cuando la API falla y propaga el error", async () => {

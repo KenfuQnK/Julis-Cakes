@@ -95,26 +95,31 @@
     "deleteBody": "Cette action est irréversible.",
     "deleteConfirm": "Supprimer",
     "deleteCancel": "Annuler",
+    "deleteError": "Impossible de supprimer la recette. Réessaie.",
     "saveErrorTitle": "Impossible d'enregistrer",
     "saveErrorBody": "Vérifiez que l'API est connectée à Neon, puis réessayez."
   },
   "mine": {
+    "cardSize": {
+      "title": "Taille de la carte",
+      "action": "Modifier la taille de {{title}}",
+      "square": "Carré",
+      "vertical": "Vertical",
+      "horizontal": "Horizontal"
+    },
     "allCategories": "Toutes les catégories",
     "emptyAllTitle": "Vous n’avez pas encore de recettes enregistrées",
     "emptyAllBody": "Créez une recette ou ajoutez-en une aux favoris pour la retrouver ici.",
     "searchPlaceholder": "Rechercher dans mes recettes…",
     "filters": "Filtrer par catégorie",
     "featured": "À l’honneur",
-    "actions": "Options pour {{title}}",
     "title": "Mes recettes",
     "created": "Créées",
     "favorites": "Favorites",
     "emptyCreatedTitle": "Vous n'avez pas encore créé de recette",
     "emptyCreatedBody": "Gardez vos recettes ici pour les avoir toujours sous la main.",
     "emptyFavoritesTitle": "Votre liste vous attend",
-    "emptyFavoritesBody": "Ajoutez une recette aux favoris pour la voir ici.",
-    "deleteLabel": "Supprimer {{title}}",
-    "editLabel": "Modifier {{title}}"
+    "emptyFavoritesBody": "Ajoutez une recette aux favoris pour la voir ici."
   },
   "ai": {
     "title": "Assistant IA",

@@ -25,6 +25,7 @@ export function FavoriteButton({
   return (
     <Pressable
       onPress={onPress}
+      hitSlop={collection ? 6 : undefined}
       accessibilityRole="button"
       accessibilityState={{ selected: isFavorite }}
       accessibilityLabel={t(
@@ -33,13 +34,13 @@ export function FavoriteButton({
           : "recipes:accessibility.toggleFavoriteOff",
         { title },
       )}
-      className={`h-8 w-8 items-center justify-center rounded-full active:opacity-60 ${collection ? (light ? "bg-surface" : isFavorite ? "bg-primary-soft/80" : "bg-surface-alt/60") : "bg-white/90"}`}
+      className={`h-8 w-8 items-center justify-center rounded-full active:opacity-60 ${collection ? (isFavorite ? "bg-surface/80" : "bg-surface/55") : "bg-white/80"}`}
     >
       {collection ? (
         <Ionicons
           name={isFavorite ? "heart" : "heart-outline"}
-          size={22}
-          color={isFavorite ? Colors.primary : Colors.muted}
+          size={19}
+          color={isFavorite ? Colors.primaryDark : Colors.foreground}
         />
       ) : (
         <FontAwesome

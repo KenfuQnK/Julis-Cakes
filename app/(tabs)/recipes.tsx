@@ -1,14 +1,12 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   Image,
-  Platform,
   Pressable,
   ScrollView,
   Text,
@@ -21,8 +19,10 @@ import { CollectionRecipeCard } from "@/src/components/CollectionRecipeCard";
 import { EmptyState } from "@/src/components/EmptyState";
 import { SearchInput } from "@/src/components/SearchInput";
 import { Colors } from "@/src/constants/Colors";
+import { useRecipeCardSizesStore } from "@/src/stores/recipeCardSizes.store";
 import { useRecipesStore } from "@/src/stores/recipes.store";
 import type { RecipeCategory } from "@/src/types/recipe";
+import { getRecipeGridBands, RECIPE_CARD_SIZES } from "@/src/utils/recipeGrid";
 import { searchRecipes } from "@/src/utils/recipeSearch";
 
 const MODES = [
@@ -33,6 +33,9 @@ const MODES = [
 
 type RecipeListMode = (typeof MODES)[number]["id"];
 
+const GRID_GAP = 10;
+const LIST_PADDING = 16;
+
 export default function MyRecipesScreen() {
   const { t } = useTranslation(["recipes"]);
   const router = useRouter();
@@ -42,14 +45,16 @@ export default function MyRecipesScreen() {
   const initialized = useRecipesStore((state) => state.initialized);
   const error = useRecipesStore((state) => state.error);
   const initialize = useRecipesStore((state) => state.initialize);
-  const deleteRecipe = useRecipesStore((state) => state.deleteRecipe);
+  const sizes = useRecipeCardSizesStore((state) => state.sizes);
+  const [gridWidth, setGridWidth] = useState(0);
   const [mode, setMode] = useState<RecipeListMode>("created");
   const [query, setQuery] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [category, setCategory] = useState<RecipeCategory>();
 
-  const collection = recipes.filter(
-    (recipe) => recipe.isUserCreated || recipe.isFavorite,
+  const collection = useMemo(
+    () => recipes.filter((recipe) => recipe.isUserCreated || recipe.isFavorite),
+    [recipes],
   );
   const categories = Array.from(
     new Set(
@@ -58,39 +63,29 @@ export default function MyRecipesScreen() {
       ),
     ),
   );
-  const filteredRecipes = searchRecipes(
-    collection.filter((recipe) => {
-      if (category && category !== recipe.category) return false;
-      if (mode === "created") return recipe.isUserCreated;
-      if (mode === "favorites") return recipe.isFavorite;
-      return true;
-    }),
-    query,
+  const filteredRecipes = useMemo(
+    () =>
+      searchRecipes(
+        collection.filter((recipe) => {
+          if (category && category !== recipe.category) return false;
+          if (mode === "created") return recipe.isUserCreated;
+          if (mode === "favorites") return recipe.isFavorite;
+          return true;
+        }),
+        query,
+      ),
+    [category, collection, mode, query],
   );
   const hasSearchFilters = Boolean(query.trim() || category);
+  const bands = useMemo(
+    () => getRecipeGridBands(filteredRecipes, sizes, !hasSearchFilters),
+    [filteredRecipes, hasSearchFilters, sizes],
+  );
+  const cellSize = Math.max(0, (gridWidth - GRID_GAP) / 2);
+  const step = cellSize + GRID_GAP;
   const emptyKey = (
     { all: "All", favorites: "Favorites", created: "Created" } as const
   )[mode];
-
-  const confirmDelete = (id: string) => {
-    const title = t("recipes:editor.deleteTitle");
-    const body = t("recipes:editor.deleteBody");
-    const remove = () => void deleteRecipe(id);
-
-    if (Platform.OS === "web") {
-      if (globalThis.confirm(`${title}\n\n${body}`)) remove();
-      return;
-    }
-
-    Alert.alert(title, body, [
-      { text: t("recipes:editor.deleteCancel"), style: "cancel" },
-      {
-        text: t("recipes:editor.deleteConfirm"),
-        style: "destructive",
-        onPress: remove,
-      },
-    ]);
-  };
 
   return (
     <View className="flex-1 bg-background">
@@ -99,31 +94,52 @@ export default function MyRecipesScreen() {
         contentContainerStyle={{
           paddingTop: insets.top + 20,
           paddingBottom: 22,
-          paddingHorizontal: 16,
+          paddingHorizontal: LIST_PADDING,
         }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
-        data={filteredRecipes}
-        keyExtractor={(recipe) => recipe.id}
-        ItemSeparatorComponent={RecipeListSeparator}
-        renderItem={({ item, index }) => (
-          <CollectionRecipeCard
-            recipe={item}
-            featured={index === 0 && !hasSearchFilters}
-            onOpen={() =>
-              router.push({ pathname: "/recipe/[id]", params: { id: item.id } })
-            }
-            onEdit={() =>
-              router.push({
-                pathname: "/recipe/edit/[id]",
-                params: { id: item.id },
-              })
-            }
-            onDelete={() => confirmDelete(item.id)}
-          />
+        data={bands}
+        keyExtractor={(band) => band.cards[0].recipe.id}
+        renderItem={({ item: band }) => (
+          <View style={{ height: band.rows * step }}>
+            {cellSize > 0 &&
+              band.cards.map(({ recipe, size, featured, row, col }) => {
+                const { colSpan, rowSpan } = RECIPE_CARD_SIZES[size];
+                const params = { id: recipe.id };
+                return (
+                  <View
+                    key={recipe.id}
+                    className="absolute"
+                    style={{
+                      start: col * step,
+                      top: (row - band.row) * step,
+                      width: colSpan * step - GRID_GAP,
+                      height: rowSpan * step - GRID_GAP,
+                    }}
+                  >
+                    <CollectionRecipeCard
+                      recipe={recipe}
+                      size={size}
+                      featured={featured}
+                      onOpen={() =>
+                        router.push({ pathname: "/recipe/[id]", params })
+                      }
+                      onResize={() =>
+                        router.push({ pathname: "/recipe/card-size", params })
+                      }
+                    />
+                  </View>
+                );
+              })}
+          </View>
         )}
         ListHeaderComponent={
-          <View className="mb-4">
+          <View
+            className="mb-4"
+            onLayout={({ nativeEvent }) =>
+              setGridWidth(nativeEvent.layout.width)
+            }
+          >
             <View
               pointerEvents="none"
               className="absolute -right-5 -top-24 h-36 w-72 -rotate-12 rounded-[45%] bg-primary-soft"
@@ -294,8 +310,4 @@ export default function MyRecipesScreen() {
       />
     </View>
   );
-}
-
-function RecipeListSeparator() {
-  return <View className="h-2.5" />;
 }
