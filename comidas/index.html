@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f7f4">
+  <title>Food Gallery</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="page">
+    <section class="intro">
+      <h1>Food Gallery<span>.</span></h1>
+      <button class="button primary" id="new-dish"><span aria-hidden="true">＋</span> Nuevo plato</button>
+    </section>
+    <section class="toolbar" aria-label="Buscar y ordenar">
+      <label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Buscar un plato…" aria-label="Buscar por nombre"><kbd>⌘ K</kbd></label>
+      <div class="toolbar-right"><span id="collection-count" class="collection-count"></span><label class="sort-label" for="sort">Ordenar</label><select id="sort" aria-label="Ordenar platos"><option value="newest">Más recientes</option><option value="oldest">Más antiguos</option></select><button class="button quiet" id="rescan"><span aria-hidden="true">↻</span> Escanear fotos</button></div>
+    </section>
+    <div id="notice" class="notice" role="status" hidden></div>
+    <div class="save-status"><span class="status-dot"></span><span id="save-status">Conectado</span></div>
+    <section id="gallery" class="gallery" aria-live="polite"></section>
+    <div id="empty" class="empty" hidden><div class="empty-icon">✳</div><h2>Todo empieza con una foto</h2><p>Añade fotos JPG o PNG a la carpeta <code>comidas/fotos</code> y vuelve a escanear.</p><button class="button primary" id="empty-scan">Escanear fotos</button></div>
+    <footer class="footer"><span>Hecho para guardar lo bueno.</span><span id="footer-count"></span></footer>
+  </main>
+  <div id="card-action-menu" class="menu floating-menu" role="menu" hidden></div>
+  <dialog id="editor" class="dialog">
+    <form id="editor-form" method="dialog"><button class="dialog-close" value="cancel" aria-label="Cerrar">×</button><p class="eyebrow">TU COLECCIÓN</p><h2 id="editor-heading">Nuevo plato</h2><label class="field-label" for="dish-name">Nombre del plato</label><input id="dish-name" class="text-input" maxlength="100" required placeholder="Por ejemplo, pizza casera"><label class="field-label" for="dish-date">Fecha</label><input id="dish-date" class="text-input" type="date" required><div class="dialog-actions"><button class="button quiet" value="cancel">Cancelar</button><button class="button primary" id="editor-submit" value="save">Crear plato</button></div></form>
+  </dialog>
+  <dialog id="move-dialog" class="dialog move-dialog" aria-labelledby="move-heading">
+    <button id="move-close" class="dialog-close" aria-label="Cerrar">×</button>
+    <p class="eyebrow">ORGANIZAR FOTOGRAFÍA</p>
+    <h2 id="move-heading">Mover a otro plato</h2>
+    <p id="move-photo-name" class="move-photo-name"></p>
+    <div id="move-options" class="move-options"></div>
+  </dialog>
+  <dialog id="crop-dialog" class="dialog crop-dialog" aria-labelledby="crop-heading">
+    <button id="crop-close" class="dialog-close" aria-label="Cerrar">×</button>
+    <h2 id="crop-heading">Editar foto</h2>
+    <p class="crop-help">Arrastra el recuadro para elegir qué se verá en el carrusel. Usa la esquina para cambiar su tamaño.</p>
+    <div class="crop-workspace"><div id="crop-canvas" class="crop-canvas"><img id="crop-image" alt="Fotografía para editar"><div id="crop-selection" class="crop-selection" role="img" aria-label="Zona visible en el carrusel"><span class="crop-handle" aria-hidden="true"></span></div></div></div>
+    <div class="dialog-actions"><button id="crop-reset" class="button quiet" type="button">Restablecer</button><button id="crop-save" class="button primary" type="button">Guardar encuadre</button></div>
+  </dialog>
+  <dialog id="viewer" class="viewer"><button class="viewer-close" aria-label="Cerrar fotografía">×</button><button class="viewer-arrow prev" aria-label="Fotografía anterior">‹</button><img id="viewer-image" alt=""><button class="viewer-arrow next" aria-label="Fotografía siguiente">›</button><div class="viewer-footer"><span id="viewer-caption"></span><button id="viewer-menu-toggle" class="viewer-menu-toggle" aria-label="Acciones de la fotografía" aria-haspopup="menu">⋯</button><div id="viewer-action-menu" class="menu viewer-action-menu" role="menu" hidden></div></div></dialog>
+  <script src="/app.js" defer></script>
+</body>
+</html>
