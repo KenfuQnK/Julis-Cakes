@@ -262,16 +262,28 @@ app.use(
   },
 );
 
+let initializationPromise: Promise<void> | undefined;
+
+export function initializeServer(): Promise<void> {
+  initializationPromise ??= (async () => {
+    await runMigrations();
+    await seedRecipes(
+      seedRecipeData.map((recipe) => ({ ...recipe, isFavorite: false })),
+    );
+  })().catch((error: unknown) => {
+    initializationPromise = undefined;
+    throw error;
+  });
+  return initializationPromise;
+}
+
 export async function startServer(): Promise<void> {
-  await runMigrations();
-  await seedRecipes(
-    seedRecipeData.map((recipe) => ({ ...recipe, isFavorite: false })),
-  );
+  await initializeServer();
   const port = Number(process.env.PORT ?? 8791);
   app.listen(port, () => log.info("Recipes API listening", { port }));
 }
 
-if (process.env.NODE_ENV !== "test") {
+if (process.env.NODE_ENV !== "test" && process.env.VERCEL !== "1") {
   startServer().catch((error) => {
     log.error("Could not start Recipes API", {
       message: error instanceof Error ? error.message : "unknown",
