@@ -99,6 +99,13 @@
     "saveErrorBody": "Comprueba que la API está conectada a Neon e inténtalo de nuevo."
   },
   "mine": {
+    "allCategories": "Todas las categorías",
+    "emptyAllTitle": "Aún no tienes recetas guardadas",
+    "emptyAllBody": "Crea una receta o marca una como favorita para verla aquí.",
+    "searchPlaceholder": "Buscar en mis recetas…",
+    "filters": "Filtrar por categoría",
+    "featured": "Destacada",
+    "actions": "Opciones de {{title}}",
     "title": "Mis recetas",
     "created": "Creadas",
     "favorites": "Favoritas",

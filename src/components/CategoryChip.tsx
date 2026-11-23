@@ -15,8 +15,9 @@ export function CategoryChip({
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
+      accessibilityLabel={label}
       accessibilityState={{ selected }}
-      className={`min-h-[40px] justify-center rounded-full px-4 ${selected ? "bg-primary" : "bg-surface"}`}
+      className={`min-h-[44px] justify-center rounded-full px-4 ${selected ? "bg-primary-fill" : "bg-surface"}`}
     >
       <Text
         className={`text-sm font-semibold ${selected ? "text-white" : "text-foreground"}`}
