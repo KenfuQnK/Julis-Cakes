@@ -20,6 +20,7 @@ export default function CreateRecipeScreen() {
       title: draft.title.trim(),
       description: draft.description.trim(),
       imageUri: draft.imageUri,
+      imageUris: draft.imageUris,
       totalTimeMinutes: draft.totalTimeMinutes
         ? Number(draft.totalTimeMinutes)
         : undefined,

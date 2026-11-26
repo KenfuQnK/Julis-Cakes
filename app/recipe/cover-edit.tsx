@@ -10,9 +10,10 @@ import { useRecipesStore } from "@/src/stores/recipes.store";
 
 export default function RecipeCoverEditScreen() {
   const { t } = useTranslation(["recipes"]);
-  const { id, featured } = useLocalSearchParams<{
+  const { id, featured, fromEdit } = useLocalSearchParams<{
     id: string;
     featured?: string;
+    fromEdit?: string;
   }>();
   const router = useRouter();
   const recipe = useRecipesStore((state) =>
@@ -25,7 +26,8 @@ export default function RecipeCoverEditScreen() {
   const ready = useRecipeCoversStore((state) => state.ready);
   const load = useRecipeCoversStore((state) => state.load);
   const [loadError, setLoadError] = useState(false);
-  const close = () => router.dismissTo("/recipes-2");
+  const close = () =>
+    fromEdit === "1" ? router.back() : router.dismissTo("/recipes-2");
 
   useEffect(() => {
     let active = true;

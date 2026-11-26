@@ -8,6 +8,7 @@ import {
 const validDraft: RecipeDraft = {
   title: "Receta de prueba",
   description: "",
+  imageUris: [],
   totalTimeMinutes: "20",
   servings: "4",
   category: "desserts",

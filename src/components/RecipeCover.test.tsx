@@ -26,10 +26,9 @@ const recipe: Recipe = {
 };
 
 describe("portada de receta", () => {
-  it("abre la receta, cambia el favorito y muestra el menú con acciones separadas", () => {
+  it("abre la receta y cambia el favorito con acciones separadas", () => {
     const onOpen = jest.fn();
     const onFavorite = jest.fn();
-    const onMenu = jest.fn();
 
     render(
       <RecipeCover
@@ -39,7 +38,6 @@ describe("portada de receta", () => {
         featured
         onOpen={onOpen}
         onFavorite={onFavorite}
-        onMenu={onMenu}
       />,
     );
 
@@ -50,10 +48,8 @@ describe("portada de receta", () => {
       name: "recipes:accessibility.toggleFavoriteOn",
     });
     fireEvent.press(favorite);
-    fireEvent.press(screen.getByRole("button", { name: "recipes:cover.menu" }));
     fireEvent(cover, "longPress");
     expect(onFavorite).toHaveBeenCalledTimes(1);
-    expect(onMenu).toHaveBeenCalledTimes(2);
     expect(onOpen).not.toHaveBeenCalled();
     fireEvent.press(cover);
     expect(onOpen).toHaveBeenCalledTimes(1);

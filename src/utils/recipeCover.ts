@@ -29,7 +29,7 @@ export function clampCoverValue(value: number, min: number, max: number) {
 }
 
 export function getRecipeCoverHeight(width: number) {
-  return Math.round(clampCoverValue(width * 0.28, 120, 210));
+  return Math.round(clampCoverValue(width * 0.36, 140, 240));
 }
 
 export function getRecipeCoverLayout(

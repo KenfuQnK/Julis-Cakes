@@ -19,6 +19,7 @@ export interface Recipe {
   title: string;
   description: string;
   imageUri?: string;
+  imageUris?: string[];
   totalTimeMinutes?: number;
   servings?: number;
   category?: RecipeCategory;
@@ -34,6 +35,7 @@ export interface RecipeDraft {
   title: string;
   description: string;
   imageUri?: string;
+  imageUris: string[];
   totalTimeMinutes: string;
   servings: string;
   category: RecipeCategory;

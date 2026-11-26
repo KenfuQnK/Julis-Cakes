@@ -1,21 +1,13 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useRef, useState } from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  Platform,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/src/components/Button";
 import { FavoriteButton } from "@/src/components/FavoriteButton";
 import { IngredientCard } from "@/src/components/IngredientCard";
-import { RecipeImage } from "@/src/components/RecipeImage";
+import { RecipeImageGallery } from "@/src/components/RecipeImageGallery";
 import { RecipeMetadata } from "@/src/components/RecipeMetadata";
 import { StepCard } from "@/src/components/StepCard";
 import { Colors } from "@/src/constants/Colors";
@@ -29,20 +21,8 @@ export default function RecipeDetailScreen() {
     state.recipes.find((item) => item.id === id),
   );
   const toggleFavorite = useRecipesStore((state) => state.toggleFavorite);
-  const deleteRecipe = useRecipesStore((state) => state.deleteRecipe);
   const scrollRef = useRef<ScrollView>(null);
   const [preparationY, setPreparationY] = useState(0);
-
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState(false);
-
-  if (isDeleting) {
-    return (
-      <View className="flex-1 items-center justify-center bg-background">
-        <ActivityIndicator color={Colors.primaryDark} />
-      </View>
-    );
-  }
 
   if (!recipe) {
     return (
@@ -61,38 +41,6 @@ export default function RecipeDetailScreen() {
     );
   }
 
-  const remove = async () => {
-    setDeleteError(false);
-    setIsDeleting(true);
-    try {
-      await deleteRecipe(recipe.id);
-      router.dismissTo("/recipes");
-    } catch {
-      setDeleteError(true);
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
-  const confirmDelete = () => {
-    const title = t("recipes:editor.deleteTitle");
-    const body = t("recipes:editor.deleteBody");
-
-    if (Platform.OS === "web") {
-      if (globalThis.confirm(`${title}\n\n${body}`)) void remove();
-      return;
-    }
-
-    Alert.alert(title, body, [
-      { text: t("recipes:editor.deleteCancel"), style: "cancel" },
-      {
-        text: t("recipes:editor.deleteConfirm"),
-        style: "destructive",
-        onPress: () => void remove(),
-      },
-    ]);
-  };
-
   const categoryLabel = recipe.category
     ? t(`recipes:categories.${recipe.category}`)
     : "";
@@ -105,11 +53,15 @@ export default function RecipeDetailScreen() {
         contentContainerStyle={{ paddingBottom: 36 }}
       >
         <View className="relative h-[340px]">
-          <RecipeImage
-            imageUri={recipe.imageUri}
+          <RecipeImageGallery
+            imageUris={
+              recipe.imageUris?.length
+                ? recipe.imageUris
+                : recipe.imageUri
+                  ? [recipe.imageUri]
+                  : []
+            }
             category={recipe.category}
-            className="h-full w-full"
-            placeholderIconSize={46}
           />
           <View className="absolute inset-x-0 top-0 h-32 bg-black/10" />
           <View className="absolute left-5 right-5 top-14 flex-row items-center justify-between">
@@ -221,28 +173,6 @@ export default function RecipeDetailScreen() {
             }
             className="mt-5"
           />
-          {recipe.isUserCreated ? (
-            <>
-              <Pressable
-                onPress={confirmDelete}
-                accessibilityRole="button"
-                accessibilityLabel={t("recipes:accessibility.delete")}
-                className="mt-4 min-h-[44px] items-center justify-center self-center px-4"
-              >
-                <Text className="text-sm font-semibold text-primary-dark">
-                  {t("recipes:accessibility.delete")}
-                </Text>
-              </Pressable>
-              {deleteError ? (
-                <Text
-                  accessibilityRole="alert"
-                  className="text-center text-sm text-error"
-                >
-                  {t("recipes:editor.deleteError")}
-                </Text>
-              ) : null}
-            </>
-          ) : null}
         </View>
       </ScrollView>
     </View>

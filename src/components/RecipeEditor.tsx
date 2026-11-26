@@ -1,4 +1,5 @@
 import * as ImagePicker from "expo-image-picker";
+import Feather from "@expo/vector-icons/Feather";
 import { useReducer, useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -28,10 +29,11 @@ import {
 type EditorAction =
   | {
       type: "setField";
-      field: keyof Omit<RecipeDraft, "ingredients" | "steps">;
+      field: "title" | "description" | "totalTimeMinutes" | "servings";
       value: string;
     }
-  | { type: "setImage"; imageUri?: string }
+  | { type: "setCoverImage"; imageUri: string }
+  | { type: "setImages"; imageUris: string[]; coverImageUri?: string }
   | { type: "setCategory"; category: RecipeCategory }
   | {
       type: "updateIngredient";
@@ -54,6 +56,8 @@ interface RecipeEditorProps {
   mode: "create" | "edit";
   initialRecipe?: Recipe;
   onSave: (draft: RecipeDraft) => void;
+  onDelete?: () => void;
+  deleteError?: boolean;
 }
 
 const ERROR_TRANSLATION_KEYS = {
@@ -72,6 +76,11 @@ function buildInitialDraft(recipe?: Recipe): RecipeDraft {
     title: recipe?.title ?? "",
     description: recipe?.description ?? "",
     imageUri: recipe?.imageUri,
+    imageUris: recipe?.imageUris?.length
+      ? recipe.imageUris
+      : recipe?.imageUri
+        ? [recipe.imageUri]
+        : [],
     totalTimeMinutes: recipe?.totalTimeMinutes?.toString() ?? "",
     servings: recipe?.servings?.toString() ?? "",
     category: recipe?.category ?? "desserts",
@@ -89,8 +98,20 @@ function recipeDraftReducer(
   switch (action.type) {
     case "setField":
       return { ...state, [action.field]: action.value };
-    case "setImage":
-      return { ...state, imageUri: action.imageUri };
+    case "setCoverImage":
+      return {
+        ...state,
+        imageUri: action.imageUri,
+        imageUris: state.imageUris.includes(action.imageUri)
+          ? state.imageUris
+          : [...state.imageUris, action.imageUri],
+      };
+    case "setImages":
+      return {
+        ...state,
+        imageUris: action.imageUris,
+        imageUri: action.coverImageUri,
+      };
     case "setCategory":
       return { ...state, category: action.category };
     case "updateIngredient":
@@ -141,6 +162,8 @@ export function RecipeEditor({
   mode,
   initialRecipe,
   onSave,
+  onDelete,
+  deleteError = false,
 }: RecipeEditorProps) {
   const { t } = useTranslation(["recipes"]);
   const [draft, dispatch] = useReducer(
@@ -153,9 +176,9 @@ export function RecipeEditor({
     stepIds: {},
   });
   // Shown straight after picking, while the file is still on its way to the
-  // bucket; `draft.imageUri` only ever holds the final remote URL.
+  // bucket; draft image URLs only contain uploaded remote files.
   const [previewUri, setPreviewUri] = useState<string | undefined>(
-    initialRecipe?.imageUri,
+    initialRecipe?.imageUri ?? initialRecipe?.imageUris?.[0],
   );
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [imageUploadFailed, setImageUploadFailed] = useState(false);
@@ -180,17 +203,65 @@ export function RecipeEditor({
         uri: asset.uri,
         width: asset.width,
       });
-      dispatch({ type: "setImage", imageUri: publicUrl });
+      dispatch({ type: "setCoverImage", imageUri: publicUrl });
       setPreviewUri(publicUrl);
     } catch {
-      // A local file:// URI would be meaningless on any other device, so a
-      // failed upload leaves the recipe without a photo rather than a dead link.
-      dispatch({ type: "setImage", imageUri: undefined });
-      setPreviewUri(undefined);
+      // A local file:// URI would be meaningless on any other device, so keep
+      // the existing remote gallery unchanged when the upload fails.
+      setPreviewUri(draft.imageUri);
       setImageUploadFailed(true);
     } finally {
       setIsUploadingImage(false);
     }
+  };
+
+  const chooseMoreImages = async () => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) return;
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsMultipleSelection: true,
+      quality: 1,
+    });
+    if (result.canceled) return;
+
+    setImageUploadFailed(false);
+    setIsUploadingImage(true);
+    let imageUris = [...draft.imageUris];
+    let coverImageUri = draft.imageUri;
+    try {
+      for (const asset of result.assets) {
+        if (!asset.uri) continue;
+        try {
+          const publicUrl = await uploadRecipeImage({
+            uri: asset.uri,
+            width: asset.width,
+          });
+          if (!imageUris.includes(publicUrl)) imageUris.push(publicUrl);
+          coverImageUri ??= publicUrl;
+        } catch {
+          setImageUploadFailed(true);
+        }
+      }
+      dispatch({ type: "setImages", imageUris, coverImageUri });
+      if (!draft.imageUri && coverImageUri) setPreviewUri(coverImageUri);
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const selectCoverImage = (imageUri: string) => {
+    dispatch({ type: "setCoverImage", imageUri });
+    setPreviewUri(imageUri);
+  };
+
+  const removeImage = (imageUri: string) => {
+    const imageUris = draft.imageUris.filter((uri) => uri !== imageUri);
+    const coverImageUri =
+      draft.imageUri === imageUri ? imageUris[0] : draft.imageUri;
+    dispatch({ type: "setImages", imageUris, coverImageUri });
+    if (draft.imageUri === imageUri) setPreviewUri(coverImageUri);
   };
 
   const handleSave = () => {
@@ -216,7 +287,7 @@ export function RecipeEditor({
     >
       <ScrollView
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{ paddingBottom: 40 }}
         className="flex-1"
         showsVerticalScrollIndicator={false}
       >
@@ -258,6 +329,69 @@ export function RecipeEditor({
               </View>
             )}
           </Pressable>
+          <View className="mb-6">
+            <View className="mb-3 flex-row items-center justify-between">
+              <Text className="text-base font-bold text-foreground">
+                {t("recipes:editor.additionalPhotos")}
+              </Text>
+              <Text className="text-sm text-muted">
+                {t("recipes:editor.photoCount", {
+                  count: draft.imageUris.length,
+                })}
+              </Text>
+            </View>
+            <View className="flex-row flex-wrap gap-3">
+              {draft.imageUris.map((imageUri, index) => (
+                <View
+                  key={imageUri}
+                  className="relative h-20 w-20 overflow-hidden rounded-xl"
+                >
+                  <Pressable
+                    onPress={() => selectCoverImage(imageUri)}
+                    accessibilityRole="button"
+                    accessibilityLabel={t("recipes:accessibility.useAsCover", {
+                      number: index + 1,
+                    })}
+                    className="h-full w-full"
+                  >
+                    <RecipeImage
+                      imageUri={imageUri}
+                      className="h-full w-full"
+                    />
+                    {imageUri === draft.imageUri ? (
+                      <View className="absolute inset-x-0 bottom-0 bg-black/65 px-1 py-1">
+                        <Text className="text-center text-[10px] font-bold text-white">
+                          {t("recipes:editor.coverPhoto")}
+                        </Text>
+                      </View>
+                    ) : null}
+                  </Pressable>
+                  <Pressable
+                    onPress={() => removeImage(imageUri)}
+                    accessibilityRole="button"
+                    accessibilityLabel={t("recipes:accessibility.removePhoto", {
+                      number: index + 1,
+                    })}
+                    className="absolute right-1 top-1 h-7 w-7 items-center justify-center rounded-full bg-black/70"
+                  >
+                    <Feather name="x" size={14} color="white" />
+                  </Pressable>
+                </View>
+              ))}
+              <Pressable
+                onPress={chooseMoreImages}
+                disabled={isUploadingImage}
+                accessibilityRole="button"
+                accessibilityLabel={t("recipes:editor.addMorePhotos")}
+                className="h-20 min-w-20 items-center justify-center rounded-xl border border-dashed border-primary px-3"
+              >
+                <Feather name="plus" size={22} color={Colors.primaryDark} />
+                <Text className="text-xs font-semibold text-primary">
+                  {t("recipes:editor.addMorePhotos")}
+                </Text>
+              </Pressable>
+            </View>
+          </View>
           {imageUploadFailed ? (
             <ErrorText message={t("recipes:editor.photoUploadError")} />
           ) : null}
@@ -502,6 +636,29 @@ export function RecipeEditor({
             onPress={handleSave}
             disabled={isUploadingImage}
           />
+
+          {mode === "edit" && onDelete ? (
+            <View className="mt-4 border-t border-border pt-4">
+              {deleteError ? (
+                <Text
+                  accessibilityRole="alert"
+                  className="mb-2 text-center text-sm text-error"
+                >
+                  {t("recipes:editor.deleteError")}
+                </Text>
+              ) : null}
+              <Pressable
+                onPress={onDelete}
+                accessibilityRole="button"
+                accessibilityLabel={t("recipes:accessibility.delete")}
+                className="min-h-[44px] items-center justify-center"
+              >
+                <Text className="text-sm font-semibold text-primary-dark">
+                  {t("recipes:accessibility.delete")}
+                </Text>
+              </Pressable>
+            </View>
+          ) : null}
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

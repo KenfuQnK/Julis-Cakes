@@ -83,11 +83,19 @@ function getRecipeInput(body: unknown): RecipeInput {
   ) {
     throw new Error("Recipe requires id, title, ingredients and steps");
   }
+  if (
+    payload.imageUris !== undefined &&
+    (!Array.isArray(payload.imageUris) ||
+      !payload.imageUris.every((uri) => typeof uri === "string"))
+  ) {
+    throw new Error("Invalid recipe images");
+  }
   return {
     id: String(payload.id),
     title: String(payload.title).trim(),
     description: String(payload.description ?? "").trim(),
     imageUri: payload.imageUri ? String(payload.imageUri) : undefined,
+    imageUris: payload.imageUris?.map((uri) => uri.trim()).filter(Boolean),
     totalTimeMinutes: payload.totalTimeMinutes
       ? Number(payload.totalTimeMinutes)
       : undefined,

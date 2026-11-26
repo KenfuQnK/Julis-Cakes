@@ -23,6 +23,7 @@ export interface RecipeInput {
   title: string;
   description: string;
   imageUri?: string;
+  imageUris?: string[];
   totalTimeMinutes?: number;
   servings?: number;
   category?: RecipeCategory;
@@ -69,16 +70,37 @@ interface StepRow {
   step_number: number;
 }
 
+interface RecipeImageRow {
+  id: string;
+  recipe_id: string;
+  image_uri: string;
+  image_kind: string;
+  sort_order: number;
+}
+
 function toRecipeRecord(
   row: RecipeRow,
   ingredients: IngredientRow[],
   steps: StepRow[],
+  images: RecipeImageRow[],
 ): RecipeRecord {
+  const imageUris = images
+    .filter((item) => item.recipe_id === row.id)
+    .sort((a, b) => a.sort_order - b.sort_order)
+    .map((item) => item.image_uri)
+    .filter(
+      (uri, index, all): uri is string =>
+        Boolean(uri) && all.indexOf(uri) === index,
+    );
+  if (row.image_uri && !imageUris.includes(row.image_uri)) {
+    imageUris.unshift(row.image_uri);
+  }
   return {
     id: row.id,
     title: row.title,
     description: row.description,
     imageUri: row.image_uri ?? undefined,
+    imageUris,
     totalTimeMinutes: row.total_time_minutes ?? undefined,
     servings: row.servings ?? undefined,
     category: row.category ?? undefined,
@@ -187,12 +209,26 @@ async function insertRecipeGraph(
     );
   }
 
-  if (recipe.imageUri) {
+  const imageUris = [
+    ...(recipe.imageUris ?? []),
+    ...(recipe.imageUri ? [recipe.imageUri] : []),
+  ].filter(
+    (uri, index, all): uri is string =>
+      Boolean(uri) && all.indexOf(uri) === index,
+  );
+  for (const [index, imageUri] of imageUris.entries()) {
+    const isCover = imageUri === recipe.imageUri;
     await client.query(
       `INSERT INTO recipe_images (id, recipe_id, image_uri, image_kind, sort_order)
-       VALUES ($1, $2, $3, 'cover', 0)
+       VALUES ($1, $2, $3, $4, $5)
        ON CONFLICT (id) DO NOTHING`,
-      [`${recipe.id}-cover`, recipe.id, recipe.imageUri],
+      [
+        isCover ? `${recipe.id}-cover` : `${recipe.id}-gallery-${index}`,
+        recipe.id,
+        imageUri,
+        isCover ? "cover" : "gallery",
+        index,
+      ],
     );
   }
 }
@@ -201,6 +237,14 @@ async function replaceRecipeChildren(
   client: PoolClient,
   recipe: RecipeInput,
 ): Promise<void> {
+  let imageUris = recipe.imageUris;
+  if (imageUris === undefined) {
+    const existingImages = await client.query<RecipeImageRow>(
+      "SELECT * FROM recipe_images WHERE recipe_id = $1 ORDER BY sort_order",
+      [recipe.id],
+    );
+    imageUris = existingImages.rows.map((item) => item.image_uri);
+  }
   await client.query("DELETE FROM recipe_ingredients WHERE recipe_id = $1", [
     recipe.id,
   ]);
@@ -210,7 +254,7 @@ async function replaceRecipeChildren(
   await client.query("DELETE FROM recipe_images WHERE recipe_id = $1", [
     recipe.id,
   ]);
-  await insertRecipeGraph(client, recipe, "unused");
+  await insertRecipeGraph(client, { ...recipe, imageUris }, "unused");
 }
 
 export async function getRecipes(scopeKey: string): Promise<RecipeRecord[]> {
@@ -238,8 +282,12 @@ export async function getRecipes(scopeKey: string): Promise<RecipeRecord[]> {
     "SELECT * FROM recipe_steps WHERE recipe_id = ANY($1) ORDER BY step_number",
     [recipes.rows.map((recipe) => recipe.id)],
   );
+  const images = await pool.query<RecipeImageRow>(
+    "SELECT * FROM recipe_images WHERE recipe_id = ANY($1) ORDER BY sort_order",
+    [recipes.rows.map((recipe) => recipe.id)],
+  );
   return recipes.rows.map((row) =>
-    toRecipeRecord(row, ingredients.rows, steps.rows),
+    toRecipeRecord(row, ingredients.rows, steps.rows, images.rows),
   );
 }
 

@@ -40,12 +40,6 @@ export const RecipeCoverRow = memo(function RecipeCoverRow({
         router.push({ pathname: "/recipe/[id]", params: { id: recipe.id } })
       }
       onFavorite={() => void toggleFavorite(recipe.id)}
-      onMenu={() =>
-        router.push({
-          pathname: "/recipe/cover-menu",
-          params: { id: recipe.id, ...(featured ? { featured: "1" } : {}) },
-        })
-      }
     />
   );
 });

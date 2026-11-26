@@ -1,4 +1,3 @@
-import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,7 +29,6 @@ interface RecipeCoverProps {
   settings: RecipeCoverSettings;
   featured: boolean;
   onOpen?: () => void;
-  onMenu?: () => void;
   onFavorite?: () => void;
 }
 
@@ -64,7 +62,6 @@ export function RecipeCover({
   settings,
   featured,
   onOpen,
-  onMenu,
   onFavorite,
 }: RecipeCoverProps) {
   const { t } = useTranslation(["recipes"]);
@@ -82,7 +79,6 @@ export function RecipeCover({
     Platform.OS === "web"
       ? { backgroundImage: gradient }
       : { experimental_backgroundImage: gradient };
-  const menuLabel = t("recipes:cover.menu", { title });
   const imageStyle = layout
     ? {
         left: layout.left,
@@ -91,24 +87,6 @@ export function RecipeCover({
         height: layout.height,
       }
     : undefined;
-  const webMenu =
-    Platform.OS === "web" && onMenu
-      ? {
-          onContextMenu: (event: React.MouseEvent) => {
-            event.preventDefault();
-            onMenu();
-          },
-          onKeyDown: (event: React.KeyboardEvent) => {
-            if (
-              event.key === "ContextMenu" ||
-              (event.shiftKey && event.key === "F10")
-            ) {
-              event.preventDefault();
-              onMenu();
-            }
-          },
-        }
-      : undefined;
   const sharpImage = source ? (
     <Image
       source={source}
@@ -161,20 +139,14 @@ export function RecipeCover({
       {onOpen ? (
         <Pressable
           onPress={onOpen}
-          onLongPress={onMenu}
           accessibilityRole="button"
           accessibilityLabel={t("recipes:accessibility.openRecipe", { title })}
-          accessibilityActions={[{ name: "menu", label: menuLabel }]}
-          onAccessibilityAction={({ nativeEvent }) => {
-            if (nativeEvent.actionName === "menu") onMenu?.();
-          }}
-          {...webMenu}
           className="absolute inset-0 active:bg-black/10"
         />
       ) : null}
       <View
         className={`absolute inset-y-0 justify-center gap-1.5 ${right ? "right-5 items-end" : "left-5 items-start"}`}
-        style={{ width: "42%", pointerEvents: "none" }}
+        style={{ width: "45%", pointerEvents: "none" }}
       >
         {featured ? (
           <View className="flex-row items-center gap-1 rounded-full bg-surface px-2 py-0.5">
@@ -185,7 +157,7 @@ export function RecipeCover({
           </View>
         ) : null}
         <Text
-          numberOfLines={3}
+          numberOfLines={4}
           className={`font-black tracking-tight text-white ${right ? "text-right" : "text-left"} ${frame.width >= 590 ? "text-3xl leading-8" : "text-[23px] leading-[24px]"}`}
           style={titleShadow}
         >
@@ -193,7 +165,7 @@ export function RecipeCover({
         </Text>
       </View>
       <View
-        className={`absolute inset-y-2 justify-between ${right ? "left-3" : "right-3"}`}
+        className={`absolute inset-y-2 justify-between ${right ? "left-1" : "right-1"}`}
         style={{ pointerEvents: onOpen ? "box-none" : "none" }}
       >
         <FavoriteButton
@@ -202,16 +174,6 @@ export function RecipeCover({
           onPress={onFavorite}
           cover
         />
-        <Pressable
-          onPress={onMenu}
-          disabled={!onMenu}
-          focusable={Boolean(onMenu)}
-          accessibilityRole="button"
-          accessibilityLabel={menuLabel}
-          className="h-11 w-11 items-center justify-center rounded-full bg-black/35 active:bg-black/60"
-        >
-          <Feather name="more-horizontal" size={22} color={Colors.white} />
-        </Pressable>
       </View>
     </View>
   );

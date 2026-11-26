@@ -38,12 +38,12 @@ export function FavoriteButton({
           : "recipes:accessibility.toggleFavoriteOff",
         { title },
       )}
-      className={`items-center justify-center rounded-full active:opacity-60 ${cover ? (isFavorite ? "h-11 w-11 bg-surface" : "h-11 w-11 border border-white bg-black/35") : collection ? (isFavorite ? "h-8 w-8 bg-surface/80" : "h-8 w-8 bg-surface/55") : "h-8 w-8 bg-white/80"}`}
+      className={`items-center justify-center rounded-full active:opacity-60 ${cover ? "h-6 w-6 bg-black/15" : collection ? (isFavorite ? "h-5 w-5 bg-surface/80" : "h-5 w-5 bg-surface/55") : "h-5 w-5 bg-white/80"}`}
     >
       {collection || cover ? (
         <Ionicons
           name={isFavorite ? "heart" : "heart-outline"}
-          size={cover ? 23 : 19}
+          size={cover ? 16 : 19}
           color={
             isFavorite
               ? Colors.primaryDark
